@@ -1,0 +1,125 @@
+{
+	"version": "1.0",
+	"coefficients": [
+		{
+			"iphoneModel": "iPhone13,2",
+			"friendlyName": "iPhone 12",
+			"a": -2.45,
+			"b": 11.3,
+			"c": -0.005,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone13,3",
+			"friendlyName": "iPhone 12 Pro",
+			"a": -2.48,
+			"b": 11.5,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone13,4",
+			"friendlyName": "iPhone 12 Pro Max",
+			"a": -2.5,
+			"b": 11.6,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone14,5",
+			"friendlyName": "iPhone 13",
+			"a": -2.48,
+			"b": 11.4,
+			"c": -0.005,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone14,2",
+			"friendlyName": "iPhone 13 Pro",
+			"a": -2.5,
+			"b": 11.55,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone14,3",
+			"friendlyName": "iPhone 13 Pro Max",
+			"a": -2.52,
+			"b": 11.65,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone14,7",
+			"friendlyName": "iPhone 14",
+			"a": -2.5,
+			"b": 11.5,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone15,2",
+			"friendlyName": "iPhone 14 Pro",
+			"a": -2.52,
+			"b": 11.7,
+			"c": -0.003,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone15,3",
+			"friendlyName": "iPhone 14 Pro Max",
+			"a": -2.53,
+			"b": 11.75,
+			"c": -0.003,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone15,4",
+			"friendlyName": "iPhone 15",
+			"a": -2.52,
+			"b": 11.6,
+			"c": -0.004,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone16,1",
+			"friendlyName": "iPhone 15 Pro",
+			"a": -2.55,
+			"b": 11.8,
+			"c": -0.003,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone16,2",
+			"friendlyName": "iPhone 15 Pro Max",
+			"a": -2.55,
+			"b": 11.85,
+			"c": -0.003,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone17,3",
+			"friendlyName": "iPhone 16",
+			"a": -2.55,
+			"b": 11.7,
+			"c": -0.003,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone17,1",
+			"friendlyName": "iPhone 16 Pro",
+			"a": -2.58,
+			"b": 11.9,
+			"c": -0.002,
+			"version": "1.0"
+		},
+		{
+			"iphoneModel": "iPhone17,2",
+			"friendlyName": "iPhone 16 Pro Max",
+			"a": -2.58,
+			"b": 11.95,
+			"c": -0.002,
+			"version": "1.0"
+		}
+	]
+}

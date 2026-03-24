@@ -1,0 +1,64 @@
+name: Nocturne
+options:
+  bundleIdPrefix: com.nocturne
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6"
+    SWIFT_STRICT_CONCURRENCY: complete
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    TARGETED_DEVICE_FAMILY: "1"
+
+configFiles:
+  Debug: Config.xcconfig
+  Release: Config.xcconfig
+
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: "2.0.0"
+  GRDB:
+    url: https://github.com/groue/GRDB.swift
+    from: "7.0.0"
+
+targets:
+  Nocturne:
+    type: application
+    platform: iOS
+    sources:
+      - path: Nocturne
+    resources:
+      - path: Nocturne/Resources
+        buildPhase: resources
+    dependencies:
+      - package: Supabase
+      - package: GRDB
+      - sdk: SpriteKit.framework
+      - sdk: CoreLocation.framework
+      - sdk: CoreMotion.framework
+      - sdk: MapKit.framework
+      - sdk: AVFoundation.framework
+      - sdk: Network.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app
+        INFOPLIST_FILE: Nocturne/Info.plist
+
+  NocturneTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: NocturneTests
+    resources:
+      - path: Nocturne/Resources
+        buildPhase: resources
+    dependencies:
+      - target: Nocturne
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app.tests
+        GENERATE_INFOPLIST_FILE: true
