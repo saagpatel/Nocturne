@@ -1,0 +1,4 @@
+// Copy this file to Config.xcconfig and fill in your Supabase credentials.
+// Config.xcconfig is gitignored and will not be committed.
+SUPABASE_URL = https:$()/$()/your-project.supabase.co
+SUPABASE_ANON_KEY = your-anon-key-here
