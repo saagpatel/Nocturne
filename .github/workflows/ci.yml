@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xcodegen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme Nocturne \
+            -project Nocturne.xcodeproj \
+            -destination 'generic/platform=iOS'
