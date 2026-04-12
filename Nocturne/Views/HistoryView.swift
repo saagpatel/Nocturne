@@ -37,6 +37,9 @@ struct HistoryView: View {
                             navigationPath.append(record)
                         }
                         .listRowBackground(Color(.systemGroupedBackground))
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Bortle \(record.bortleClass), \(viewModel.locationName(for: record)), \(String(format: "%.1f", record.skyBrightness)) magnitudes per arc second squared, \(record.isUploaded ? "uploaded" : "not uploaded")")
+                        .accessibilityHint("Tap to view sky comparison")
                     }
                     .listStyle(.insetGrouped)
                     .scrollContentBackground(.hidden)

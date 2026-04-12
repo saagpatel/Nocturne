@@ -22,6 +22,8 @@ struct BortleBadge: View {
                     .foregroundStyle(.white.opacity(0.6))
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Bortle Class \(bortleClass): \(description)")
     }
 
     private var color: Color {

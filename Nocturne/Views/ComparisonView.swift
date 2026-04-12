@@ -4,6 +4,8 @@ import SwiftUI
 struct ComparisonView: View {
     @Bindable var viewModel: ComparisonViewModel
     @State private var fullScreenPanel: Panel?
+    @State private var shareImage: UIImage?
+    @State private var showShareSheet = false
 
     enum Panel: Identifiable {
         case user, pristine
@@ -33,6 +35,8 @@ struct ComparisonView: View {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.white)
                 }
+                .accessibilityLabel("Share comparison")
+                .accessibilityHint("Share a composite image of your sky versus a pristine sky")
             }
         }
         .task {
@@ -42,6 +46,11 @@ struct ComparisonView: View {
         }
         .fullScreenCover(item: $fullScreenPanel) { panel in
             fullScreenView(for: panel)
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let shareImage {
+                ShareSheet(items: [shareImage])
+            }
         }
     }
 
@@ -100,6 +109,9 @@ struct ComparisonView: View {
             }
         }
         .padding(.horizontal, 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(starCount) stars visible")
+        .accessibilityHint("Tap to view full screen")
     }
 
     // MARK: - Stat Bar
@@ -139,6 +151,8 @@ struct ComparisonView: View {
                 .foregroundStyle(.white.opacity(0.5))
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(value) \(unit)")
     }
 
     // MARK: - Full Screen
@@ -166,6 +180,7 @@ struct ComparisonView: View {
                             .font(.system(size: 28))
                             .foregroundStyle(.white.opacity(0.7))
                     }
+                    .accessibilityLabel("Close full screen view")
                     .padding(16)
                 }
                 Spacer()
@@ -200,7 +215,120 @@ struct ComparisonView: View {
     // MARK: - Share
 
     private func shareComposite() {
-        // TODO: Implement composite screenshot via SKView.texture(from:)
-        // Deferred to polish — requires capturing both scenes to UIImage
+        guard let userScene = viewModel.userScene,
+              let pristineScene = viewModel.pristineScene else { return }
+
+        let sceneSize = userScene.size
+        let panelWidth = sceneSize.width
+        let panelHeight = sceneSize.height
+        let gap: CGFloat = 2
+        let labelHeight: CGFloat = 40
+        let statBarHeight: CGFloat = 60
+        let compositeWidth = panelWidth * 2 + gap
+        let compositeHeight = panelHeight + labelHeight + statBarHeight
+
+        // Render each scene to UIImage via offscreen SKView
+        let skView = SKView(frame: CGRect(origin: .zero, size: sceneSize))
+        skView.allowsTransparency = false
+
+        let userTexture = skView.texture(from: userScene)
+        let pristineTexture = skView.texture(from: pristineScene)
+
+        guard let userCGImage = userTexture?.cgImage(),
+              let pristineCGImage = pristineTexture?.cgImage() else { return }
+
+        let userImage = UIImage(cgImage: userCGImage)
+        let pristineImage = UIImage(cgImage: pristineCGImage)
+
+        // Composite both panels with labels and stats
+        let renderer = UIGraphicsImageRenderer(
+            size: CGSize(width: compositeWidth, height: compositeHeight)
+        )
+
+        let composite = renderer.image { ctx in
+            // Background
+            UIColor.black.setFill()
+            ctx.fill(CGRect(origin: .zero, size: CGSize(width: compositeWidth, height: compositeHeight)))
+
+            // Draw star panels
+            userImage.draw(in: CGRect(x: 0, y: 0, width: panelWidth, height: panelHeight))
+            pristineImage.draw(in: CGRect(x: panelWidth + gap, y: 0, width: panelWidth, height: panelHeight))
+
+            // Labels
+            let labelAttrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 13, weight: .semibold),
+                .foregroundColor: UIColor.white,
+            ]
+            let userLabel = "Your Sky" as NSString
+            let pristineLabel = "What You're Missing" as NSString
+            let userLabelSize = userLabel.size(withAttributes: labelAttrs)
+            let pristineLabelSize = pristineLabel.size(withAttributes: labelAttrs)
+
+            userLabel.draw(
+                at: CGPoint(
+                    x: (panelWidth - userLabelSize.width) / 2,
+                    y: panelHeight + (labelHeight - userLabelSize.height) / 2
+                ),
+                withAttributes: labelAttrs
+            )
+            pristineLabel.draw(
+                at: CGPoint(
+                    x: panelWidth + gap + (panelWidth - pristineLabelSize.width) / 2,
+                    y: panelHeight + (labelHeight - pristineLabelSize.height) / 2
+                ),
+                withAttributes: labelAttrs
+            )
+
+            // Stat bar
+            let statY = panelHeight + labelHeight
+            UIColor(white: 0.08, alpha: 1.0).setFill()
+            ctx.fill(CGRect(x: 0, y: statY, width: compositeWidth, height: statBarHeight))
+
+            let statAttrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 14, weight: .heavy),
+                .foregroundColor: UIColor.white,
+            ]
+            let unitAttrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 10, weight: .regular),
+                .foregroundColor: UIColor.white.withAlphaComponent(0.5),
+            ]
+
+            let brightness = String(format: "%.1f mag/arcsec²", viewModel.skyBrightness)
+            let bortle = "Bortle Class \(viewModel.bortleClass)"
+            let stats = "\(brightness)  |  \(bortle)" as NSString
+            let statsSize = stats.size(withAttributes: statAttrs)
+            stats.draw(
+                at: CGPoint(
+                    x: (compositeWidth - statsSize.width) / 2,
+                    y: statY + 12
+                ),
+                withAttributes: statAttrs
+            )
+
+            let watermark = "Measured with Nocturne" as NSString
+            let watermarkSize = watermark.size(withAttributes: unitAttrs)
+            watermark.draw(
+                at: CGPoint(
+                    x: (compositeWidth - watermarkSize.width) / 2,
+                    y: statY + statBarHeight - watermarkSize.height - 8
+                ),
+                withAttributes: unitAttrs
+            )
+        }
+
+        shareImage = composite
+        showShareSheet = true
     }
+}
+
+// MARK: - Share Sheet
+
+private struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
