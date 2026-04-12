@@ -25,6 +25,12 @@ final class AppState {
         set { UserDefaults.standard.set(newValue, forKey: "allowCellularUploads") }
     }
 
+    /// Whether the user has completed the onboarding tutorial.
+    var hasSeenOnboarding: Bool {
+        get { UserDefaults.standard.bool(forKey: "hasSeenOnboarding") }
+        set { UserDefaults.standard.set(newValue, forKey: "hasSeenOnboarding") }
+    }
+
     init() {
         self.databaseManager = try? DatabaseManager.makeDefault()
         // Only initialize Supabase if properly configured.

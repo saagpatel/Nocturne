@@ -7,23 +7,28 @@ struct NocturneApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabView {
-                MeasureTab(db: appState.databaseManager)
-                    .tabItem {
-                        Label("Measure", systemImage: "moon.stars.fill")
-                    }
+            if appState.hasSeenOnboarding {
+                TabView {
+                    MeasureTab(db: appState.databaseManager)
+                        .tabItem {
+                            Label("Measure", systemImage: "moon.stars.fill")
+                        }
 
-                MapTab(supabase: appState.supabaseService)
-                    .tabItem {
-                        Label("Map", systemImage: "map.fill")
-                    }
+                    MapTab(supabase: appState.supabaseService)
+                        .tabItem {
+                            Label("Map", systemImage: "map.fill")
+                        }
 
-                HistoryTab(db: appState.databaseManager)
-                    .tabItem {
-                        Label("History", systemImage: "clock.fill")
-                    }
+                    HistoryTab(db: appState.databaseManager)
+                        .tabItem {
+                            Label("History", systemImage: "clock.fill")
+                        }
+                }
+                .preferredColorScheme(.dark)
+            } else {
+                OnboardingView(hasSeenOnboarding: $appState.hasSeenOnboarding)
+                    .preferredColorScheme(.dark)
             }
-            .preferredColorScheme(.dark)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {

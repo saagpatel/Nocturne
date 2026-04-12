@@ -22,9 +22,11 @@ struct MapView: View {
         ZStack(alignment: .topTrailing) {
             MapKitView(viewModel: viewModel, showRawPoints: showRawPoints)
                 .ignoresSafeArea()
+                .accessibilityLabel("Light pollution map")
+                .accessibilityHint("Interactive map showing light pollution measurements worldwide")
 
             VStack(alignment: .trailing, spacing: 8) {
-                Picker("Mode", selection: $showRawPoints) {
+                Picker("Display mode", selection: $showRawPoints) {
                     Text("Heatmap").tag(false)
                     Text("Points").tag(true)
                 }
@@ -32,6 +34,8 @@ struct MapView: View {
                 .frame(width: 180)
                 .padding(.horizontal)
                 .padding(.top, 56) // clear navigation bar
+                .accessibilityLabel("Map display mode")
+                .accessibilityHint("Switch between heatmap overlay and individual measurement points")
 
                 if viewModel.isLoading {
                     ProgressView()

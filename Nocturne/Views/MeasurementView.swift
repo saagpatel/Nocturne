@@ -66,6 +66,8 @@ struct MeasurementView: View {
             if let session = viewModel.previewSession {
                 CameraPreview(session: session)
                     .ignoresSafeArea()
+                    .accessibilityLabel("Camera viewfinder")
+                    .accessibilityHint("Shows live camera feed pointed at the sky")
             }
 
             // Overlay
@@ -90,6 +92,8 @@ struct MeasurementView: View {
                         .background(Color.amber)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
+                .accessibilityLabel("Measure Sky")
+                .accessibilityHint("Captures a calibrated sky brightness reading")
                 .padding(.horizontal, 24)
                 .padding(.bottom, 48)
             }
@@ -110,10 +114,12 @@ struct MeasurementView: View {
                 Circle()
                     .stroke(Color.amber.opacity(0.6), lineWidth: 3)
                     .frame(width: 120, height: 120)
+                    .accessibilityHidden(true)
 
                 Text(viewModel.isValidating ? "Validating..." : "Capturing...")
                     .font(.system(size: 16, weight: .light))
                     .foregroundStyle(.white.opacity(0.8))
+                    .accessibilityLabel(viewModel.isValidating ? "Validating measurement" : "Capturing sky image")
             }
         }
     }
@@ -143,6 +149,8 @@ struct MeasurementView: View {
                             .font(.system(size: 14, weight: .regular))
                             .foregroundStyle(.white.opacity(0.5))
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Sky brightness: \(String(format: "%.1f", record.skyBrightness)) magnitudes per arc second squared")
 
                     // Bortle badge
                     BortleBadge(bortleClass: record.bortleClass)
@@ -174,11 +182,15 @@ struct MeasurementView: View {
                         }
                     }
                     .buttonStyle(PrimaryButtonStyle())
+                    .accessibilityLabel("See Your Sky")
+                    .accessibilityHint("View side-by-side comparison of your sky versus a pristine dark sky")
 
                     Button("Measure Again") {
                         viewModel.reset()
                     }
                     .buttonStyle(SecondaryButtonStyle())
+                    .accessibilityLabel("Measure Again")
+                    .accessibilityHint("Take another sky brightness measurement")
                 }
                 .padding(24)
                 .background(Color(white: 0.11))
@@ -213,12 +225,15 @@ struct MeasurementView: View {
                     viewModel.reset()
                 }
                 .buttonStyle(PrimaryButtonStyle())
+                .accessibilityHint("Retry the sky measurement")
                 .padding(.top, 8)
             }
             .padding(32)
             .background(Color(white: 0.11))
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding(.horizontal, 24)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Measurement rejected")
 
             Spacer()
         }
@@ -259,12 +274,15 @@ struct MeasurementView: View {
                     Task { await viewModel.startSession() }
                 }
                 .buttonStyle(PrimaryButtonStyle())
+                .accessibilityHint("Restart the measurement session")
                 .padding(.top, 8)
             }
             .padding(32)
             .background(Color(white: 0.11))
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding(.horizontal, 24)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Error occurred")
 
             Spacer()
         }
@@ -296,6 +314,8 @@ struct MeasurementView: View {
                 .font(.system(size: 12, weight: .regular))
                 .foregroundStyle(.white.opacity(0.5))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }
 

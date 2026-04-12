@@ -25,7 +25,8 @@ Nocturne is an iOS citizen science app that measures light pollution from the ni
 - Conventional commits: feat:, fix:, chore:, docs:
 
 ## Current Phase
-**Phase 0: Foundation**
+**Phase 4: Polish & App Store Prep** (complete)
+Phases 0–4 implemented. Onboarding, accessibility, share composite, App Store metadata done.
 See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
 
 ## Key Decisions
