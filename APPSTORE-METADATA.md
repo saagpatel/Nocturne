@@ -19,7 +19,7 @@
 ## Keywords
 
 ```
-light pollution,night sky,bortle scale,dark sky,astronomy,citizen science,sky brightness,star gazing,light map,sky quality
+light pollution,night sky,bortle scale,dark sky,astronomy,citizen science,sky brightness,star gazing
 ```
 
 *(100 character limit)*
@@ -134,3 +134,6 @@ which is expected behavior. The app does not crash or error on indoor use.
 - [ ] PrivacyInfo.xcprivacy includes camera, location, and UserDefaults declarations
 - [ ] TestFlight internal test complete (full measurement flow, heatmap visible, history populated)
 - [ ] Submit for Review
+
+## Copyright
+© 2026 saagpatel
