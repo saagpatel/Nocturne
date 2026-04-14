@@ -4,10 +4,19 @@
 <plist version="1.0">
 <dict>
   <key>method</key>
-  <string>app-store</string>
+  <string>app-store-connect</string>
   <key>destination</key>
   <string>upload</string>
   <key>teamID</key>
   <string>3TGZFKFNA4</string>
+  <key>signingStyle</key>
+  <string>manual</string>
+  <key>signingCertificate</key>
+  <string>Apple Distribution</string>
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>com.nocturnn.app</key>
+    <string>Nocturne App Store</string>
+  </dict>
 </dict>
 </plist>
