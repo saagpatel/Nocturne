@@ -1,0 +1,27 @@
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    app_store_connect_api_key(
+      key_id: "6NPVH55ZWG",
+      issuer_id: "fd4f140d-508c-4f9d-9984-8e088cccc10a",
+      key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_6NPVH55ZWG.p8"),
+      in_house: false
+    )
+  end
+
+  lane :upload do
+    deliver(
+      skip_binary_upload: true,
+      skip_app_version_update: true,
+      overwrite_screenshots: true,
+      submit_for_review: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      app_version: "1.0",
+      app_review_information: {
+        notes: "Grant camera and location permissions. Point at a dark ceiling to simulate night sky measurement."
+      }
+    )
+  end
+end
