@@ -26,6 +26,9 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Prepare CI config
+        run: cp Config.xcconfig.example Config.xcconfig
+
       - name: Generate Xcode project
         run: xcodegen generate
 

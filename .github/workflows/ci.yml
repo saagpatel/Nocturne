@@ -10,6 +10,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install xcodegen
         run: brew install xcodegen
+      - name: Prepare CI config
+        run: cp Config.xcconfig.example Config.xcconfig
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build
