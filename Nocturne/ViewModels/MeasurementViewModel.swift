@@ -1,4 +1,4 @@
-import AVFoundation
+@preconcurrency import AVFoundation
 import CoreMotion
 import os
 
@@ -230,4 +230,3 @@ final class MeasurementViewModel {
         state = .idle
     }
 }
-

@@ -10,6 +10,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install xcodegen
         run: brew install xcodegen
+      - name: Create CI config
+        run: |
+          cat > Config.xcconfig <<'EOF'
+          SUPABASE_URL = https:/$()/example.invalid
+          SUPABASE_ANON_KEY = ci-placeholder
+          EOF
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build
@@ -17,4 +23,5 @@ jobs:
           xcodebuild build \
             -scheme Nocturne \
             -project Nocturne.xcodeproj \
-            -destination 'generic/platform=iOS'
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO
