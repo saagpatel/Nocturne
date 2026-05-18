@@ -1,4 +1,4 @@
-import AVFoundation
+@preconcurrency import AVFoundation
 import os
 
 /// Manages camera capture for sky brightness measurement.
