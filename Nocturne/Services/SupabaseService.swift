@@ -1,5 +1,6 @@
 import Foundation
 import GRDB
+@preconcurrency import PostgREST
 import Supabase
 import os
 
