@@ -23,9 +23,6 @@ final class HistoryViewModel {
     private let db: DatabaseManager
 
     @ObservationIgnored
-    private let geocoder = CLGeocoder()
-
-    @ObservationIgnored
     private let logger = Logger(subsystem: "com.nocturne.app", category: "HistoryViewModel")
 
     // MARK: - Init
@@ -71,6 +68,7 @@ final class HistoryViewModel {
     private func geocode(_ record: MeasurementRecord) async {
         let location = CLLocation(latitude: record.latitude, longitude: record.longitude)
         do {
+            let geocoder = CLGeocoder()
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             let name: String
             if let locality = placemarks.first?.locality {

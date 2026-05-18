@@ -46,7 +46,7 @@ targets:
       - sdk: Network.framework
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app
         INFOPLIST_FILE: Nocturne/Info.plist
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "Apple Distribution: SAAGAR I PATEL (3TGZFKFNA4)"
@@ -64,5 +64,5 @@ targets:
       - target: Nocturne
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app.tests
         GENERATE_INFOPLIST_FILE: true

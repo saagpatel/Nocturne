@@ -1,6 +1,6 @@
 import Foundation
 import GRDB
-import Supabase
+@preconcurrency import Supabase
 import os
 
 actor SupabaseService {
