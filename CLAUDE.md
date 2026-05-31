@@ -4,7 +4,7 @@
 Nocturne is an iOS citizen science app that measures light pollution from the night sky using the iPhone's camera, then renders a side-by-side comparison: the user's actual washed-out sky vs. the same sky under pristine Bortle Class 1 conditions. Every measurement uploads to a crowdsourced Supabase/PostGIS database that powers a global light pollution heatmap. App Store distribution, free, donation model deferred.
 
 ## Tech Stack
-- Language: Swift 5.10, iOS 17+ minimum deployment target
+- Language: Swift 6, iOS 17+ minimum deployment target
 - UI Framework: SwiftUI (all views, no UIKit except where AVFoundation forces it)
 - Camera: AVFoundation — AVCaptureSession with manual exposure (ExposureMode.custom)
 - Location: CoreLocation — CLLocationManager
@@ -63,7 +63,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
 
 ## Stack
 
-- Language: Swift 5.10, iOS 17+ minimum deployment target
+- Language: Swift 6, iOS 17+ minimum deployment target
 - UI Framework: SwiftUI (all views, no UIKit except where AVFoundation forces it)
 - Camera: AVFoundation — AVCaptureSession with manual exposure (ExposureMode.custom)
 - Location: CoreLocation — CLLocationManager
