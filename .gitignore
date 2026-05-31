@@ -19,3 +19,4 @@ Config.xcconfig
 # Python
 __pycache__/
 *.pyc
+CLAUDE.md.bak
