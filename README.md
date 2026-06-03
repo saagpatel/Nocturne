@@ -39,12 +39,12 @@ Deploy to a device. Go outside after astronomical twilight (when the sun is more
 | UI | SwiftUI + SpriteKit (star renderer) + MapKit |
 | Camera | AVFoundation (manual ISO/exposure) |
 | Local database | GRDB.swift (SQLite) |
-| Backend (optional) | Supabase (Postgres + Storage) |
+| Backend (optional) | Supabase (Postgres + PostGIS) |
 | Star catalog | Hipparcos/Tycho-2 (bundled subset) |
 
 ## Architecture
 
-The measurement pipeline runs as a Swift `actor`: AVFoundation captures a manual-exposure frame, a pixel-sampling pass computes mean luminance over the center crop, and a calibration lookup converts raw luma to mag/arcsec² using device-specific coefficients stored in a bundled JSON table. The 4-gate validator runs before any pixel math and short-circuits with a typed rejection reason. The SpriteKit comparison view queries a bundled SQLite subset of the Hipparcos/Tycho-2 catalog filtered to the visible magnitude range for the measured sky brightness.
+The AVFoundation camera layer runs as a Swift `actor` (`CameraService`); pixel processing and calibration run as static functions in a `MeasurementEngine` namespace. A manual-exposure frame is captured, a pixel-sampling pass computes mean luminance over the center crop, and a calibration lookup converts raw luma to mag/arcsec² using device-specific coefficients stored in a bundled JSON table. The 4-gate validator runs before any pixel math and short-circuits with a typed rejection reason. The SpriteKit comparison view queries a bundled SQLite subset of the Hipparcos/Tycho-2 catalog filtered to the visible magnitude range for the measured sky brightness.
 
 ## License
 
