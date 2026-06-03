@@ -52,7 +52,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
 - Star Catalog: Hipparcos/Tycho-2 bundled as SQLite (filtered to mag ≤ 9.0, ~300K stars)
 - Local DB: SQLite via GRDB.swift — local measurement log
 
-## How To Run
+## Conventions
 
 - Swift strict concurrency (`-strict-concurrency=complete`) — async/await throughout, no callbacks
 - MVVM: Views are dumb, ViewModels own business logic, Services own I/O

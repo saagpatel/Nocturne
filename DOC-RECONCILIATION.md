@@ -13,50 +13,79 @@ doc edits were made without any corresponding code change.
 ### 1. What it is
 
 **Status:** `consistent`
-**Evidence:** `Nocturne/App/NocturneApp.swift` entry point confirmed. Three tabs — Measure
-(`MeasurementView`), Map (`MapView`), History (`HistoryView`) — with `OnboardingView` on
-first launch. README description matches the code structure exactly.
+**Evidence:** `Nocturne/App/NocturneApp.swift` entry point confirmed (`@main struct NocturneApp`).
+Three tabs — Measure (`MeasureTab` → `MeasurementView`), Map (`MapTab` → `MapView`), History
+(`HistoryTab` → `HistoryView`) — with `OnboardingView` on first launch. README description
+matches the code structure exactly. 36 Swift source files present.
 
 ---
 
 ### 2. Current state
 
 **Status:** `consistent`
-**Evidence:** All phase-4 source files present and accounted for:
-`OnboardingView.swift`, `MeasurementView.swift`, `ComparisonView.swift`, `MapView.swift`,
-`HistoryView.swift`, `SupabaseService.swift`, `AppState.swift`. CLAUDE.md and README both
-mark Phase 4 complete. Git log (`bacfbac` Merge `feat/phase4-polish`, `822c7b6`–`e06d8ec`)
-confirms Phase 4 was merged to main. Test suite is present: 10 test files in `NocturneTests/`
-(`AstrometryTests`, `CalibrationServiceTests`, `DatabaseManagerTests`,
-`MeasurementEnginePixelTests`, `MeasurementEngineTests`, `SkySceneTests`,
-`StarCatalogServiceTests`, `StarCatalogTests`, `ValidationGateTests`, `WeatherServiceTests`).
+**Evidence:** All phase 0–4 source files present. `OnboardingView.swift`, `MeasurementView.swift`,
+`ComparisonView.swift`, `MapView.swift`, `HistoryView.swift`, `SupabaseService.swift`,
+`AppState.swift` all confirmed. CLAUDE.md and README both mark Phase 4 complete. Test suite:
+10 files in `NocturneTests/` (`AstrometryTests`, `CalibrationServiceTests`,
+`DatabaseManagerTests`, `MeasurementEnginePixelTests`, `MeasurementEngineTests`,
+`SkySceneTests`, `StarCatalogServiceTests`, `StarCatalogTests`, `ValidationGateTests`,
+`WeatherServiceTests`). No `NocturneUITests/` directory exists (absent from glob).
 
 ---
 
 ### 3. Stack
 
-**Status:** `drifted` (one field) + `consistent` (all others)
+**Status:** `drifted` (two fields) + `consistent` (all others)
 
-**Drifted — CLAUDE.md Swift version:**
-- **File:** `CLAUDE.md` (Tech Stack section + portfolio-context block)
-- **Before:** `- Language: Swift 5.10, iOS 17+ minimum deployment target`
-- **After:** `- Language: Swift 6, iOS 17+ minimum deployment target`
-- **Evidence:** `Nocturne.xcodeproj/project.pbxproj` lines 590 and 709 both read
-  `SWIFT_VERSION = 6;`. The README already correctly said "Swift 6".
+**Drifted — README.md tech stack table: "Storage" → "PostGIS"**
+- **File:** `README.md` (Tech Stack table, previously line 42)
+- **Before:** `| Backend (optional) | Supabase (Postgres + Storage) |`
+- **After:** `| Backend (optional) | Supabase (Postgres + PostGIS) |`
+- **Evidence:** `Nocturne/Services/SupabaseService.swift` uses `client.from("measurements").insert()`
+  and `client.rpc("heatmap_tiles", params: ...)` — PostgREST and PostGIS RPC calls. There are
+  zero Supabase Storage API calls anywhere in the codebase. CLAUDE.md correctly states
+  "Postgres + PostGIS + Realtime".
 
-**Consistent:** iOS 17.0 deployment target (`IPHONEOS_DEPLOYMENT_TARGET = 17.0` in
-pbxproj lines 582 and 700). Supabase-swift 2.x (`Package.resolved` shows 2.42.0).
-GRDB.swift in both CLAUDE.md and README stated without a version number — consistent.
+**Drifted — README.md architecture: "measurement pipeline runs as a Swift `actor`"**
+- **File:** `README.md` (Architecture section)
+- **Before:** `The measurement pipeline runs as a Swift \`actor\`: AVFoundation captures...`
+- **After:** `The AVFoundation camera layer runs as a Swift \`actor\` (\`CameraService\`); pixel
+  processing and calibration run as static functions in a \`MeasurementEngine\` namespace...`
+- **Evidence:** `Nocturne/Services/MeasurementEngine.swift:4` — `enum MeasurementEngine` with
+  static methods, not an actor. `Nocturne/Services/CameraService.swift:6` — `actor CameraService`.
+  `Nocturne/Services/SupabaseService.swift:6` — `actor SupabaseService`. Only the camera and
+  upload layers are actors; pixel math is a static-function namespace.
+
+**Drifted — CLAUDE.md portfolio-context: mislabeled section heading**
+- **File:** `CLAUDE.md` (inside `<!-- portfolio-context -->` block)
+- **Before:** `## How To Run` (with content that is entirely coding conventions, not run commands)
+- **After:** `## Conventions`
+- **Evidence:** The six bullet points under the heading are identical in content to the
+  `## Conventions` section in the main CLAUDE.md body (lines 16–21). The section contains no
+  run commands; `## How To Run` is the wrong heading.
+
+**Consistent (verified):** Swift 6 (`SWIFT_VERSION = 6` in `project.pbxproj:590,709`). iOS 17.0
+deployment target (`IPHONEOS_DEPLOYMENT_TARGET = 17.0` at `project.pbxproj:582,700`). GRDB.swift
+(`Package.resolved` → version `7.10.0`). supabase-swift (`Package.resolved` → `2.42.0`, both
+docs say "2.x"). SpriteKit (built-in, no package). Hipparcos/Tycho-2 bundled SQLite. `Config.xcconfig`
+gitignored (`/.gitignore:14`). `Config.xcconfig.example` present as setup template.
+`PrivacyInfo.xcprivacy` present at `Nocturne/Resources/PrivacyInfo.xcprivacy`.
 
 ---
 
 ### 4. How to run
 
 **Status:** `consistent`
-**Evidence:** `Nocturne.xcodeproj` confirmed present. README install steps (`git clone` →
-`open Nocturne.xcodeproj`) match the project structure. No `Makefile` or shell scripts
-define alternative run commands. The "Xcode 16+" prerequisite is consistent with
-Swift 6 compiler availability.
+**Evidence:** `Nocturne.xcodeproj` confirmed present. README Quick Start (`git clone` →
+`open Nocturne.xcodeproj`) reflects the actual project structure. No `Makefile` or shell
+scripts define alternative build/run commands. Xcode 16+ prerequisite is consistent with
+Swift 6 compiler requirements. Supabase described as optional; `AppState.swift:38–45` confirms
+graceful nil-out of `supabaseService` when credentials are absent or placeholder.
+**Note (not drifted):** `Config.xcconfig` is the base configuration reference for all build
+configs (`project.pbxproj:537,649`). Without copying `Config.xcconfig.example`, Xcode shows
+a missing-file warning, but the app builds and runs in local-only mode. The README's
+"Supabase project (optional)" statement is accurate. A `cp Config.xcconfig.example Config.xcconfig`
+setup step would improve the installation instructions but is not required for the app to build.
 
 ---
 
@@ -64,44 +93,45 @@ Swift 6 compiler availability.
 
 **Status:** `consistent` (in editable docs)
 **Evidence:** README states the hot-pixel gate "rejects … saturated frames (>1% saturated
-pixels)" — this matches `ValidationConstants.maxHotPixelFraction = 0.01` (1%) in
-`Constants.swift:62`. The README description is accurate.
-
-Non-editable file contradictions are listed in the **Contradictions for Manual Review**
-section below.
+pixels)" — matches `ValidationConstants.maxHotPixelFraction = 0.01` (1%) at
+`Nocturne/Constants.swift:61`. README 4-gate description (solar altitude > −6°, >20° tilt,
+>1% saturated pixels, cloud-cover tagging) matches `ValidationConstants` exactly.
+Non-editable file contradictions carried forward from the prior pass are listed in the
+**Contradictions for Manual Review** section below.
 
 ---
 
 ### 6. Next move
 
 **Status:** `unverifiable`
-**Reason:** CLAUDE.md says "See IMPLEMENTATION-ROADMAP.md" and the disposition says
-App Store submission + backend hosting decision remain. Whether a backend Supabase project
-is live and accessible cannot be verified by reading source files. The documented next
-step is forward-looking and cannot be confirmed or contradicted from code alone.
+**Reason:** CLAUDE.md says Phase 4 is complete and refers to IMPLEMENTATION-ROADMAP.md.
+`docs/PORTFOLIO-DISPOSITION.md` lists App Store submission and backend hosting as the
+remaining operator actions. Whether the Supabase backend is live and the App Store Connect
+record exists cannot be verified by reading source files alone. The documented next step
+is forward-looking and cannot be confirmed or contradicted from code.
 
 ---
 
 ## Contradictions for Manual Review
 
 These files are outside the editable set (`README.md`, `CLAUDE.md`, `AGENTS.md`,
-`DOC-RECONCILIATION.md`, `docs/`). Do not edit them here — a human should apply the
-one-line fixes below.
+`DOC-RECONCILIATION.md`, `docs/`). The items below were first flagged in the prior
+reconciliation pass (2026-05-30) and remain unaddressed. A human should apply each
+one-line fix.
 
 ### `IMPLEMENTATION-ROADMAP.md` — GRDB version
 
 - **Location:** Architecture → Dependencies section (around line 322)
 - **Current text:** `https://github.com/groue/GRDB.swift  (version: 6.x)`
 - **Fix:** Change `6.x` → `7.x` (or `7.10.0`)
-- **Evidence:** `Nocturne.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`
-  shows `"version": "7.10.0"` for the `grdb.swift` pin.
+- **Evidence:** `Package.resolved` shows `"version": "7.10.0"` for the `grdb.swift` pin.
 
 ### `IMPLEMENTATION-ROADMAP.md` — Hot-pixel threshold
 
 - **Location:** Riskiest Parts → Measurement validation section (around line 17)
 - **Current text:** `reject if >0.1% of pixels are at 255 luminance`
 - **Fix:** Change `0.1%` → `1%`
-- **Evidence:** `Nocturne/Constants.swift:62` — `static let maxHotPixelFraction: Double = 0.01`
+- **Evidence:** `Nocturne/Constants.swift:61` — `static let maxHotPixelFraction: Double = 0.01`
   (0.01 = 1%). The README correctly says ">1% saturated pixels".
 
 ### `IMPLEMENTATION-ROADMAP.md` — SettingsView listed in file structure
@@ -109,15 +139,14 @@ one-line fixes below.
 - **Location:** Architecture → File Structure section (around line 91)
 - **Current text:** `├── SettingsView.swift         # Device model info, calibration status, donation link`
 - **Fix:** Remove or annotate as not yet implemented — no `SettingsView.swift` exists
-  anywhere in the repo.
-- **Evidence:** Glob `Nocturne/Views/SettingsView.swift` returned no results.
+  anywhere in the repo (glob `Nocturne/**/*.swift` confirms absence).
 
 ### `IMPLEMENTATION-ROADMAP.md` — NocturneUITests listed in file structure
 
-- **Location:** Architecture → File Structure section (around line 125-127)
+- **Location:** Architecture → File Structure section (around lines 125–127)
 - **Current text:** `└── NocturneUITests/ └── MeasurementFlowUITest.swift`
-- **Fix:** Remove — this directory does not exist in the repo.
-- **Evidence:** Glob `NocturneUITests/**` returned no results.
+- **Fix:** Remove — this directory does not exist in the repo (glob `NocturneUITests/**`
+  returned no results).
 
 ### `IMPLEMENTATION-ROADMAP.md` — Test file list understates actual test coverage
 
@@ -133,6 +162,6 @@ one-line fixes below.
 
 ## Footer
 
-**Generated:** 2026-05-30 19:34:39 PDT
-**Branch:** `docs/truth-up-2026-05-30`
-**HEAD sha reconciled against:** `8517d8eda35d3a8e813303a79bcacdb9768e6cf9`
+**Generated:** 2026-06-02 19:32:53 PDT
+**Branch:** `docs/truth-up-2026-06-02`
+**HEAD sha reconciled against:** `d7a0572e9927e840a3b86d0341dfa49c5658bc8e`
