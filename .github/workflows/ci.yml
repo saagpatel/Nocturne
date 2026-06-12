@@ -10,8 +10,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install xcodegen
         run: brew install xcodegen
-      - name: Prepare CI config
-        run: cp Config.xcconfig.example Config.xcconfig
+      - name: Create CI config
+        run: |
+          cat > Config.xcconfig <<'EOF'
+          SUPABASE_URL = https:/$()/example.invalid
+          SUPABASE_ANON_KEY = ci-placeholder
+          EOF
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build

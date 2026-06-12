@@ -15,7 +15,7 @@
   <string>Apple Distribution</string>
   <key>provisioningProfiles</key>
   <dict>
-    <key>com.nocturnn.app</key>
+    <key>com.nocturne.app</key>
     <string>Nocturne App Store</string>
   </dict>
 </dict>
