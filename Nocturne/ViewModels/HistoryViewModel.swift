@@ -67,6 +67,7 @@ final class HistoryViewModel {
 
     private func geocode(_ record: MeasurementRecord) async {
         let location = CLLocation(latitude: record.latitude, longitude: record.longitude)
+        let geocoder = CLGeocoder()
         do {
             let geocoder = CLGeocoder()
             let placemarks = try await geocoder.reverseGeocodeLocation(location)

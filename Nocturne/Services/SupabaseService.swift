@@ -1,6 +1,7 @@
 import Foundation
 import GRDB
-@preconcurrency import Supabase
+@preconcurrency import PostgREST
+import Supabase
 import os
 
 actor SupabaseService {
