@@ -18,10 +18,22 @@ jobs:
           EOF
       - name: Generate Xcode project
         run: xcodegen generate
-      - name: Build
+      - name: Verify bundled catalog
+        run: |
+          test -f Nocturne/Resources/gaia_dr3.sqlite
+          test "$(sqlite3 Nocturne/Resources/gaia_dr3.sqlite 'SELECT COUNT(*) FROM stars;')" -ge 20000
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme Nocturne \
+            -project Nocturne.xcodeproj \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+            CODE_SIGNING_ALLOWED=NO
+      - name: Release build
         run: |
           xcodebuild build \
             -scheme Nocturne \
             -project Nocturne.xcodeproj \
+            -configuration Release \
             -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO

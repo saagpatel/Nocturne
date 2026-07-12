@@ -16,14 +16,19 @@ actor WeatherService {
     /// Fetch cloud cover percentage (0–100) for the given location at the current hour.
     /// Returns nil on network error, parse failure, or missing data.
     func cloudCoverPercent(latitude: Double, longitude: Double) async -> Int? {
-        let urlString = "\(WeatherConstants.openMeteoBaseURL)"
-            + "?latitude=\(latitude)"
-            + "&longitude=\(longitude)"
-            + "&hourly=cloudcover"
-            + "&forecast_days=1"
-
-        guard let url = URL(string: urlString) else {
+        guard var components = URLComponents(string: WeatherConstants.openMeteoBaseURL) else {
             logger.error("Invalid Open-Meteo URL")
+            return nil
+        }
+        components.queryItems = [
+            URLQueryItem(name: "latitude", value: String(latitude)),
+            URLQueryItem(name: "longitude", value: String(longitude)),
+            URLQueryItem(name: "hourly", value: "cloudcover"),
+            URLQueryItem(name: "forecast_days", value: "1")
+        ]
+
+        guard let url = components.url, url.scheme == "https" else {
+            logger.error("Open-Meteo URL must use HTTPS")
             return nil
         }
 

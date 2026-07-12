@@ -48,9 +48,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app
         INFOPLIST_FILE: Nocturne/Info.plist
-        CODE_SIGN_STYLE: Manual
-        CODE_SIGN_IDENTITY: "Apple Distribution: SAAGAR I PATEL (3TGZFKFNA4)"
-        PROVISIONING_PROFILE_SPECIFIER: Nocturne App Store
+        CODE_SIGN_STYLE: Automatic
 
   NocturneTests:
     type: bundle.unit-test

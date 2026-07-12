@@ -144,7 +144,9 @@ final class MeasurementViewModel {
                 // 8. Calibrate
                 let model = DeviceInfo.machineIdentifier
                 let calibration = CalibrationService.coefficients(for: model)
-                let isCalibrated = calibration != nil
+                // Device profiles are provisional until they are validated against a
+                // traceable physical reference. Never label an estimate as calibrated.
+                let isCalibrated = false
 
                 let skyBrightness: Double
                 if let cal = calibration {

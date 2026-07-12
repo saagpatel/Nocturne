@@ -11,7 +11,7 @@ iOS citizen science app: measures light pollution via iPhone camera, renders a s
 - MapKit + MKMapView with MKOverlayRenderer for heatmap (client-side gradient tiles)
 - Supabase Swift SDK (`supabase-swift` 2.x) — Postgres + PostGIS + Realtime; anon key loaded from `Config.xcconfig` (excluded from git, never hardcoded)
 - Open-Meteo API (free, no key required) — cloud cover validation at measurement time
-- Hipparcos/Tycho-2 bundled SQLite (mag ≤ 9.0, ~300K stars, ~15MB); GRDB.swift for local measurement log
+- Gaia DR3 bundled SQLite (G ≤ 7.0, 21,329 stars, ~1.5MB); GRDB.swift for local measurement log
 
 ## Conventions
 - Swift strict concurrency (`-strict-concurrency=complete`) — async/await throughout, no callbacks; all network calls (Open-Meteo, Supabase) off the main thread
@@ -49,7 +49,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
 - Maps: MapKit + MKMapView with MKOverlayRenderer for heatmap
 - Backend: Supabase Swift SDK (`supabase-swift` 2.x) — Postgres + PostGIS + Realtime
 - Weather: Open-Meteo API (free, no key required) — cloud cover validation
-- Star Catalog: Hipparcos/Tycho-2 bundled as SQLite (filtered to mag ≤ 9.0, ~300K stars)
+- Star Catalog: Gaia DR3 bundled as SQLite (filtered to G ≤ 7.0, 21,329 stars)
 - Local DB: SQLite via GRDB.swift — local measurement log
 
 ## Conventions

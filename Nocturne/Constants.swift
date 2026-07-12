@@ -21,7 +21,7 @@ enum SkyBrightnessConstants {
 
 enum DatabaseConstants {
     static let localDatabaseName = "nocturne_local.sqlite"
-    static let starCatalogName = "hipparcos_tycho2"
+    static let starCatalogName = "gaia_dr3"
 }
 
 // MARK: - Calibration

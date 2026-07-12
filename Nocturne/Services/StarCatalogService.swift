@@ -2,7 +2,7 @@ import Foundation
 import GRDB
 import os
 
-/// Queries the bundled Hipparcos/Tycho-2 star catalog for visible stars
+/// Queries the bundled Gaia DR3 display catalog for visible stars
 /// within a given field of view.
 actor StarCatalogService {
 

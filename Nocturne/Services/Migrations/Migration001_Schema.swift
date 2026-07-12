@@ -16,7 +16,7 @@ enum Migration001_Schema {
             t.column("calibration_ver", .text).notNull()
             t.column("cloud_cover_pct", .integer)
             t.column("is_cloudy", .integer).notNull().defaults(to: 0)
-            t.column("is_calibrated", .integer).notNull().defaults(to: 1)
+            t.column("is_calibrated", .integer).notNull().defaults(to: 0)
             t.column("is_uploaded", .integer).notNull().defaults(to: 0)
             t.column("uploaded_at", .integer)
             t.column("device_tilt_deg", .double).notNull()

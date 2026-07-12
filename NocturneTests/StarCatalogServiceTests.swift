@@ -8,7 +8,7 @@ final class StarCatalogServiceTests: XCTestCase {
 
     override func setUp() async throws {
         try await super.setUp()
-        guard let path = Bundle.main.path(forResource: "hipparcos_tycho2", ofType: "sqlite") else {
+        guard let path = Bundle.main.path(forResource: "gaia_dr3", ofType: "sqlite") else {
             XCTFail("Star catalog not found in test bundle")
             return
         }

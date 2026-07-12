@@ -9,7 +9,10 @@ struct MeasurementView: View {
             Color.black.ignoresSafeArea()
 
             switch viewModel.state {
-            case .idle, .requestingPermissions, .preparingCamera:
+            case .idle:
+                readyToBeginView
+
+            case .requestingPermissions, .preparingCamera:
                 startupView
 
             case .awaitingCapture:
@@ -29,14 +32,41 @@ struct MeasurementView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .task {
-            if case .idle = viewModel.state {
-                await viewModel.startSession()
-            }
-        }
     }
 
     // MARK: - Startup
+
+    private var readyToBeginView: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Image(systemName: "camera.metering.center.weighted")
+                .font(.system(size: 64))
+                .foregroundStyle(Color.amber)
+                .accessibilityHidden(true)
+
+            Text("Ready to measure the night sky?")
+                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+
+            Text("Nocturne will ask for camera and location access, then show a live preview. Frames stay on this device.")
+                .font(.system(size: 16))
+                .foregroundStyle(.white.opacity(0.7))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            Spacer()
+
+            Button("Prepare Camera") {
+                Task { await viewModel.startSession() }
+            }
+            .buttonStyle(PrimaryButtonStyle())
+            .accessibilityHint("Requests camera and location access")
+            .padding(.horizontal, 24)
+            .padding(.bottom, 32)
+        }
+    }
 
     private var startupView: some View {
         VStack(spacing: 24) {
@@ -93,7 +123,7 @@ struct MeasurementView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
                 .accessibilityLabel("Measure Sky")
-                .accessibilityHint("Captures a calibrated sky brightness reading")
+                .accessibilityHint("Captures an experimental sky brightness estimate")
                 .padding(.horizontal, 24)
                 .padding(.bottom, 48)
             }
@@ -158,8 +188,8 @@ struct MeasurementView: View {
                     // Meta row
                     HStack(spacing: 24) {
                         metaItem(
-                            label: "Calibrated",
-                            value: record.isCalibrated ? "Yes" : "No",
+                            label: "Reading",
+                            value: record.isCalibrated ? "Calibrated" : "Estimate",
                             color: record.isCalibrated ? .green : .orange
                         )
 

@@ -9,12 +9,12 @@ struct OnboardingView: View {
         OnboardingStep(
             icon: "moon.stars.fill",
             title: "Nocturne measures your sky's darkness",
-            description: "Using your iPhone's camera, Nocturne calculates how much light pollution washes out the stars above you and converts it to a standardized Bortle scale reading."
+            description: "Using your iPhone's camera, Nocturne estimates how much light pollution washes out the stars above you and maps the result to the Bortle scale."
         ),
         OnboardingStep(
             icon: "iphone.rear.camera",
             title: "Point at the sky, hold still, and measure",
-            description: "Find a clear view of the night sky, hold your phone pointed straight up, and tap Measure. Nocturne captures a calibrated exposure and validates the reading automatically."
+            description: "Find a clear view of the night sky, hold your phone pointed straight up, and tap Measure. Nocturne captures a fixed exposure and checks the conditions automatically."
         ),
         OnboardingStep(
             icon: "sparkles",
