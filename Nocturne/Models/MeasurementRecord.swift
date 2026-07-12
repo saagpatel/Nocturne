@@ -7,7 +7,7 @@ struct MeasurementRecord: Identifiable, Codable, Hashable, Sendable {
     let latitude: Double
     let longitude: Double
     let altitudeM: Double
-    let skyBrightness: Double       // mag/arcsec², calibrated
+    let skyBrightness: Double       // experimental mag/arcsec² estimate
     let rawBrightness: Double       // cd/m²
     let iphoneModel: String         // e.g. "iPhone15,2"
     let isoValue: Int               // always 1600

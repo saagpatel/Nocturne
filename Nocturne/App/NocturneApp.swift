@@ -23,6 +23,14 @@ struct NocturneApp: App {
                         .tabItem {
                             Label("History", systemImage: "clock.fill")
                         }
+
+                    SettingsView(
+                        shareMeasurements: $appState.shareMeasurements,
+                        allowCellularUploads: $appState.allowCellularUploads
+                    )
+                        .tabItem {
+                            Label("Settings", systemImage: "gearshape.fill")
+                        }
                 }
                 .preferredColorScheme(.dark)
             } else {

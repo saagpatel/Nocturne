@@ -67,7 +67,7 @@ matches the code structure exactly. 36 Swift source files present.
 **Consistent (verified):** Swift 6 (`SWIFT_VERSION = 6` in `project.pbxproj:590,709`). iOS 17.0
 deployment target (`IPHONEOS_DEPLOYMENT_TARGET = 17.0` at `project.pbxproj:582,700`). GRDB.swift
 (`Package.resolved` → version `7.10.0`). supabase-swift (`Package.resolved` → `2.42.0`, both
-docs say "2.x"). SpriteKit (built-in, no package). Hipparcos/Tycho-2 bundled SQLite. `Config.xcconfig`
+docs say "2.x"). SpriteKit (built-in, no package). Gaia DR3 bundled SQLite. `Config.xcconfig`
 gitignored (`/.gitignore:14`). `Config.xcconfig.example` present as setup template.
 `PrivacyInfo.xcprivacy` present at `Nocturne/Resources/PrivacyInfo.xcprivacy`.
 

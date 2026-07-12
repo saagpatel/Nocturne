@@ -25,6 +25,12 @@ final class AppState {
         set { UserDefaults.standard.set(newValue, forKey: "allowCellularUploads") }
     }
 
+    /// Explicit consent to contribute queued measurements to the community dataset.
+    var shareMeasurements: Bool {
+        get { UserDefaults.standard.bool(forKey: "shareMeasurements") }
+        set { UserDefaults.standard.set(newValue, forKey: "shareMeasurements") }
+    }
+
     /// Whether the user has completed the onboarding tutorial.
     var hasSeenOnboarding: Bool {
         get { UserDefaults.standard.bool(forKey: "hasSeenOnboarding") }
@@ -37,7 +43,10 @@ final class AppState {
         // Gracefully skip if Config.xcconfig is not set up.
         if let urlString = Bundle.main.infoDictionary?["SUPABASE_URL"] as? String,
            let url = URL(string: urlString),
+           url.scheme == "https",
            let anonKey = Bundle.main.infoDictionary?["SUPABASE_ANON_KEY"] as? String,
+           !anonKey.isEmpty,
+           !anonKey.contains("your-anon-key"),
            !urlString.contains("your-project") {
             self.supabaseService = SupabaseService(url: url, anonKey: anonKey)
         } else {
@@ -68,6 +77,10 @@ final class AppState {
     }
 
     private func retryPendingUploads() async {
+        guard shareMeasurements else {
+            logger.debug("Community contribution is disabled")
+            return
+        }
         guard let db = databaseManager, let supabase = supabaseService else { return }
         await supabase.retryPendingUploads(db: db.dbQueue)
     }

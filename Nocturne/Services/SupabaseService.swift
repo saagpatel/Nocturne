@@ -10,20 +10,7 @@ actor SupabaseService {
 
     private let logger = Logger(subsystem: "com.nocturne.app", category: "SupabaseService")
 
-    init() {
-        guard let urlString = Bundle.main.infoDictionary?["SUPABASE_URL"] as? String,
-              let url = URL(string: urlString),
-              let anonKey = Bundle.main.infoDictionary?["SUPABASE_ANON_KEY"] as? String,
-              !urlString.contains("your-project") else {
-            fatalError(
-                "Supabase credentials not configured. "
-                + "Copy Config.xcconfig.example to Config.xcconfig and add your credentials."
-            )
-        }
-        self.client = SupabaseClient(supabaseURL: url, supabaseKey: anonKey)
-    }
-
-    /// For testing or when credentials are supplied at runtime (e.g. from AppState).
+    /// Credentials are validated by AppState before this service is created.
     init(url: URL, anonKey: String) {
         self.client = SupabaseClient(supabaseURL: url, supabaseKey: anonKey)
     }

@@ -28,6 +28,10 @@ struct DatabaseManager: Sendable {
         migrator.eraseDatabaseOnSchemaChange = true
         #endif
         migrator.registerMigration("001_schema", migrate: Migration001_Schema.migrate)
+        migrator.registerMigration(
+            "002_reset_provisional_calibration",
+            migrate: Migration002_ResetProvisionalCalibration.migrate
+        )
         try migrator.migrate(dbQueue)
 
         return DatabaseManager(dbQueue: dbQueue)
@@ -41,12 +45,16 @@ struct DatabaseManager: Sendable {
 
         var migrator = DatabaseMigrator()
         migrator.registerMigration("001_schema", migrate: Migration001_Schema.migrate)
+        migrator.registerMigration(
+            "002_reset_provisional_calibration",
+            migrate: Migration002_ResetProvisionalCalibration.migrate
+        )
         try migrator.migrate(dbQueue)
 
         return DatabaseManager(dbQueue: dbQueue)
     }
 
-    /// Opens the bundled read-only Hipparcos/Tycho-2 star catalog.
+    /// Opens the bundled read-only Gaia DR3 display catalog.
     static func openStarCatalog() throws -> DatabaseQueue? {
         guard let path = Bundle.main.path(
             forResource: DatabaseConstants.starCatalogName,

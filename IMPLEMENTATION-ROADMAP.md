@@ -1,5 +1,12 @@
 # Nocturne — Implementation Roadmap
 
+> Historical planning document. Current release truth lives in the implementation,
+> README, privacy policy, and App Store metadata. The original Hipparcos/Tycho
+> catalog plan was replaced on July 12, 2026 with an attributed Gaia DR3 G ≤ 7
+> subset because the older catalog's noncommercial license was not a safe App
+> Store distribution fit. Device profiles remain provisional; readings are
+> experimental estimates until validated against traceable physical references.
+
 ## Executive Summary
 
 ### What We're Building

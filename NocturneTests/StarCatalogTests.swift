@@ -5,8 +5,8 @@ import GRDB
 final class StarCatalogTests: XCTestCase {
 
     func testBundledDatabaseRowCount() throws {
-        guard let path = Bundle.main.path(forResource: "hipparcos_tycho2", ofType: "sqlite") else {
-            XCTFail("hipparcos_tycho2.sqlite not found in test bundle")
+        guard let path = Bundle.main.path(forResource: "gaia_dr3", ofType: "sqlite") else {
+            XCTFail("gaia_dr3.sqlite not found in test bundle")
             return
         }
 
@@ -15,7 +15,7 @@ final class StarCatalogTests: XCTestCase {
         let dbQueue = try DatabaseQueue(path: path, configuration: configuration)
 
         let count = try dbQueue.read { db in
-            try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM stars WHERE vmag <= 10.0")
+            try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM stars WHERE vmag <= 7.0")
         }
 
         guard let count else {
@@ -23,7 +23,12 @@ final class StarCatalogTests: XCTestCase {
             return
         }
 
-        XCTAssertGreaterThanOrEqual(count, 100_000, "Expected at least 100,000 stars")
-        XCTAssertLessThanOrEqual(count, 400_000, "Expected at most 400,000 stars")
+        XCTAssertGreaterThanOrEqual(count, 20_000, "Expected at least 20,000 stars")
+        XCTAssertLessThanOrEqual(count, 30_000, "Expected at most 30,000 stars")
+
+        let credit = try dbQueue.read { db in
+            try String.fetchOne(db, sql: "SELECT credit FROM provenance")
+        }
+        XCTAssertEqual(credit, "ESA/Gaia/DPAC")
     }
 }

@@ -15,7 +15,7 @@ CREATE TABLE measurements (
     calibration_ver TEXT NOT NULL,
     cloud_cover_pct INTEGER,
     is_cloudy       BOOLEAN NOT NULL DEFAULT FALSE,
-    is_calibrated   BOOLEAN NOT NULL DEFAULT TRUE,
+    is_calibrated   BOOLEAN NOT NULL DEFAULT FALSE,
     bortle_class    INTEGER NOT NULL CHECK (bortle_class BETWEEN 1 AND 9)
 );
 
@@ -24,9 +24,8 @@ CREATE INDEX idx_measurements_location ON measurements USING GIST (location);
 CREATE INDEX idx_measurements_measured_at ON measurements (measured_at DESC);
 CREATE INDEX idx_measurements_bortle ON measurements (bortle_class);
 
--- Row-level security: public read, anon insert only (no update/delete)
+-- Row-level security: anon inserts only. Raw precise coordinates are never public.
 ALTER TABLE measurements ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read" ON measurements FOR SELECT USING (true);
 CREATE POLICY "Anon insert" ON measurements FOR INSERT WITH CHECK (true);
 
 -- Heatmap tile function: returns aggregated grid cells for bounding box
@@ -52,7 +51,13 @@ BEGIN
         ROUND(AVG(m.bortle_class))::INTEGER AS avg_bortle
     FROM measurements m
     WHERE m.location && ST_MakeEnvelope(min_lon, min_lat, max_lon, max_lat, 4326)
-      AND m.is_calibrated = TRUE
     GROUP BY cell_lat, cell_lon;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, extensions;
+
+REVOKE ALL ON TABLE measurements FROM anon, authenticated;
+GRANT INSERT ON TABLE measurements TO anon, authenticated;
+REVOKE ALL ON FUNCTION heatmap_tiles(FLOAT, FLOAT, FLOAT, FLOAT, FLOAT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION heatmap_tiles(FLOAT, FLOAT, FLOAT, FLOAT, FLOAT) TO anon, authenticated;

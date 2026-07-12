@@ -31,7 +31,12 @@ final class WeatherServiceTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        MockURLProtocol.requestHandler = { _ in
+        MockURLProtocol.requestHandler = { request in
+            let components = try XCTUnwrap(URLComponents(url: request.url!, resolvingAgainstBaseURL: false))
+            XCTAssertEqual(components.scheme, "https")
+            XCTAssertEqual(components.host, "api.open-meteo.com")
+            XCTAssertEqual(Dictionary(uniqueKeysWithValues: components.queryItems!.map { ($0.name, $0.value) })["latitude"]!, "37.77")
+            XCTAssertEqual(Dictionary(uniqueKeysWithValues: components.queryItems!.map { ($0.name, $0.value) })["longitude"]!, "-122.41")
             let response = HTTPURLResponse(
                 url: URL(string: "https://api.open-meteo.com")!,
                 statusCode: 200,

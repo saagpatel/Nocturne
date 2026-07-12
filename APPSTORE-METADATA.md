@@ -28,27 +28,27 @@ light pollution,night sky,bortle scale,dark sky,astronomy,citizen science,sky br
 
 ## Description
 
-Nocturne turns your iPhone into a scientific instrument for measuring light pollution. Point your camera at the night sky, and Nocturne captures a calibrated exposure to calculate your sky's darkness on the Bortle scale — the international standard for sky quality.
+Nocturne uses your iPhone camera to estimate local light pollution. Point it at the night sky and Nocturne captures a fixed exposure, checks measurement conditions, and maps the result to the Bortle scale.
 
 Then see what you're missing: a real-time, side-by-side star field comparison shows your washed-out sky next to the same patch of sky under pristine Bortle Class 1 conditions — thousands of stars, the Milky Way, and deep-sky objects that light pollution hides from view.
 
-Every measurement contributes to a crowdsourced global light pollution map, building a living picture of how artificial light affects our night skies.
+You can optionally contribute measurements to a crowdsourced global light-pollution map. Contribution is off by default and controlled in Settings.
 
 KEY FEATURES
 
-• Calibrated sky brightness measurement using your iPhone's camera (ISO 1600, 4-second exposure)
+• Experimental sky-brightness estimate using your iPhone's camera
 • Automatic Bortle class classification (1–9 scale)
 • Side-by-side star field comparison: your sky vs. a pristine dark sky
 • Interactive global light pollution heatmap powered by community data
 • Measurement validation: tilt detection, daylight rejection, and hot-pixel filtering
 • Weather-aware: cloud cover tagged via Open-Meteo for data quality
-• Per-device calibration against VIIRS satellite reference data (iPhone 12–16 Pro)
+• Provisional device profiles for supported iPhone models
 • Complete measurement history with reverse-geocoded locations
-• Offline-first: all measurements stored locally with automatic cloud sync
+• Offline-first: all measurements stored locally; community upload is opt-in
 
 BUILT FOR CITIZEN SCIENCE
 
-Nocturne is designed for accuracy, not approximation. Each measurement follows a fixed protocol — same ISO, same exposure, same wide-angle lens — so readings are reproducible and comparable across sessions, devices, and locations. The calibration pipeline maps raw pixel luminance to magnitudes per arc-second squared (mag/arcsec²), the unit used by professional sky quality meters.
+Nocturne is an experimental citizen-science tool, not a calibrated professional meter. A fixed capture protocol helps make repeated readings more consistent, but results can vary by device and conditions. Treat values as estimates until the device profiles are validated against traceable physical references.
 
 ---
 
@@ -64,13 +64,13 @@ How dark is your sky tonight? Point your iPhone up and find out — then see the
 
 ## Support URL
 
-https://nocturne.app/support
+https://github.com/saagpatel/Nocturne/issues
 
 ---
 
 ## Privacy Policy URL
 
-https://nocturne.app/privacy
+https://github.com/saagpatel/Nocturne/blob/main/PRIVACY.md
 
 ---
 
@@ -109,7 +109,7 @@ are required for the core measurement feature.
 To test the core flow:
 1. Grant camera and location permissions when prompted
 2. Tap "Measure" and point the device at the sky (or a dark ceiling for review purposes)
-3. Hold the device steady for the 4-second calibrated exposure
+3. Hold the device steady for the fixed exposure
 4. View the Bortle class result and the side-by-side star field comparison
 5. Tap "Map" to see the global heatmap with community measurements
 

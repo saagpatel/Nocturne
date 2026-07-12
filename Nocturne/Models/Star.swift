@@ -2,11 +2,11 @@ import Foundation
 import GRDB
 
 struct Star: Identifiable, Sendable {
-    let id: Int                     // Tycho-2 catalog number
+    let id: Int                     // Gaia DR3 source identifier
     let ra: Double                  // Right ascension, degrees
     let dec: Double                 // Declination, degrees
-    let vmag: Double                // Visual magnitude
-    let colorIndex: Double?         // B-V color index for star color tinting
+    let vmag: Double                // Gaia G-band mean magnitude
+    let colorIndex: Double?         // Gaia BP-RP color for star tinting
 }
 
 // MARK: - GRDB FetchableRecord (read-only)
