@@ -19,18 +19,49 @@ Nocturne is currently an experimental estimator, not a calibrated professional m
 ## Quick Start
 
 ### Prerequisites
-- Xcode 16+
+- macOS with full Xcode 16+, active Xcode developer tools, and an installed iOS simulator
+- XcodeGen (required to generate the project)
 - iOS 17.0+ device (camera long-exposure required)
 - Supabase project (optional; local-only mode works without it)
 
 ### Installation
 ```bash
 git clone https://github.com/saagpatel/Nocturne
+cd Nocturne
+make generate
 open Nocturne.xcodeproj
 ```
 
 ### Usage
 Deploy to a device. Go outside after astronomical twilight (when the sun is more than 18° below the horizon). Point the phone straight up and tap **Measure**. The 4-gate validator will guide you if conditions aren't met.
+
+## Verification
+
+Run from the repository root. `make generate` preserves an existing `Config.xcconfig`, otherwise copies the
+placeholder example, checks the bundled Gaia catalog, and runs XcodeGen. Keep
+placeholder/local-only configuration for verification; live Supabase credentials
+are unnecessary. Swift package resolution may download the declared packages.
+
+```bash
+# Simulator unit suite; signing is disabled by the Makefile
+make test
+
+# Compile the Release configuration without signing or uploading an archive
+make release
+```
+
+The Makefile's simulator destination must exist locally. Override `SIMULATOR` if
+needed, for example `make test SIMULATOR='platform=iOS Simulator,name=iPhone 17'`
+for an installed simulator with that name. For a focused pure-data check, open the
+generated project in Xcode and run `MeasurementEngineTests` in the Test navigator.
+The broader simulator suite and Release build remain the checks before delivery.
+There is no configured standalone lint or formatter command.
+
+The focused measurement suite uses synthetic calibration/luminance values.
+Camera capture and physical calibration require a device and separate physical
+reference evidence; do not trigger uploads or live weather/backend requests merely
+to verify documentation. For UI changes, inspect the affected simulator flow
+with disposable data; measurement hardware behavior remains a separate device check.
 
 ## Tech Stack
 
