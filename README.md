@@ -10,11 +10,11 @@ Nocturne is currently an experimental estimator, not a calibrated professional m
 ## Features
 
 - **Sky brightness estimate** — long exposure via AVFoundation, provisional per-device luminance conversion, and Rec. 709 luma weights
-- **Bortle class rating** — maps sky brightness to Bortle classes 1–9 (16.5–21.75 mag/arcsec² range)
-- **4-gate validation** — rejects daylight measurements (solar altitude > −6°), tilted-phone readings (>20° from zenith), and saturated frames (>1% saturated pixels); tags cloud cover without rejecting
+- **Bortle class rating** — maps sky brightness to Bortle classes 1–9 (class 1 at ≥21.75 mag/arcsec²; class 9 below 16.5)
+- **4-gate validation** — rejects daylight measurements (solar altitude ≥ −6°), tilted-phone readings (≥20° from zenith), and saturated frames (≥1% saturated pixels); tags cloud cover without rejecting
 - **Sky comparison view** — side-by-side SpriteKit star fields: your measured sky vs. a Bortle Class 1 reference at the same coordinates, drawn from Gaia DR3 data
 - **Global heatmap** — community measurement heat tiles rendered as color-coded `MKOverlay` layers (blue = pristine, red = urban)
-- **Offline-first** — measurements saved to local GRDB SQLite first; Supabase uploads retry automatically on reconnect
+- **Offline-first** — measurements saved to local GRDB SQLite first; Supabase uploads retry when the app enters the foreground with connectivity, sharing consent, and Wi-Fi (or cellular uploads enabled)
 
 ## Quick Start
 
@@ -76,7 +76,7 @@ with disposable data; measurement hardware behavior remains a separate device ch
 
 ## Architecture
 
-The AVFoundation camera layer runs as a Swift `actor` (`CameraService`); pixel processing and calibration run as static functions in a `MeasurementEngine` namespace. A manual-exposure frame is captured, a pixel-sampling pass computes mean luminance over the center crop, and a calibration lookup converts raw luma to mag/arcsec² using device-specific coefficients stored in a bundled JSON table. The 4-gate validator runs before any pixel math and short-circuits with a typed rejection reason. The SpriteKit comparison view queries a bundled SQLite subset of Gaia DR3 filtered to the visible magnitude range for the measured sky brightness.
+The AVFoundation camera layer runs as a Swift `actor` (`CameraService`); pixel processing and calibration run as static functions in a `MeasurementEngine` namespace. A manual-exposure frame is captured, a pixel-sampling pass computes mean luminance over the center crop, and a calibration lookup converts raw luma to mag/arcsec² using device-specific coefficients stored in a bundled JSON table. The 4-gate validator runs after pixel sampling and weather lookup, before calibration, and short-circuits with a typed rejection reason. The SpriteKit comparison view queries a bundled SQLite subset of Gaia DR3 up to the pristine sky limiting magnitude; the user scene filters that shared star list to the measured sky brightness.
 
 The star display data are open and free to use with credit to **ESA/Gaia/DPAC**. The exact archive query and credit are embedded in the database's `provenance` table and reproduced by `scripts/build_star_catalog.py`.
 
