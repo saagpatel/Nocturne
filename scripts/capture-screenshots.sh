@@ -11,7 +11,7 @@ DEVICE_NAME="iPhone 18 Pro Max"
 DEVICE_SLUG="iphone-18-pro-max"
 EXPECTED_WIDTH=1320
 EXPECTED_HEIGHT=2868
-SHOTS=(3 4)
+SHOTS=(1 3 4)
 BOOTED_DEVICES=()
 OVERRIDDEN_DEVICES=()
 
@@ -51,8 +51,7 @@ if [[ ! -d Nocturne.xcodeproj ]]; then
     xcodegen generate
 fi
 
-printf "01 OPERATOR: capture on device — successful physical measurement result.\n"
-printf "02 OPERATOR: capture on device — comparison opened from that result.\n"
+printf "02 OPERATOR: capture on device — comparison from a successful physical-device reading.\n"
 xcodebuild build -project Nocturne.xcodeproj -scheme Nocturne \
     -configuration Debug -destination 'generic/platform=iOS Simulator' \
     -derivedDataPath "$DERIVED" CODE_SIGNING_ALLOWED=NO
@@ -101,6 +100,13 @@ xcrun simctl status_bar "$DEVICE_ID" override --time 9:41 \
     --batteryState charged --batteryLevel 100
 xcrun simctl install "$DEVICE_ID" "$APP"
 xcrun simctl ui "$DEVICE_ID" appearance dark
+
+# Make this app the previous foreground app before any captured launch, clearing
+# the cross-app status bar back link. Termination is safe if it is not running.
+xcrun simctl terminate "$DEVICE_ID" "$BUNDLE_ID" >/dev/null 2>&1 || true
+xcrun simctl launch "$DEVICE_ID" "$BUNDLE_ID" -AppStoreScreenshot "${SHOTS[0]}"
+sleep 2
+xcrun simctl terminate "$DEVICE_ID" "$BUNDLE_ID" >/dev/null 2>&1 || true
 
 OUTPUT="screenshots/appstore/$DEVICE_SLUG"
 mkdir -p "$OUTPUT"
