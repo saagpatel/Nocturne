@@ -4,9 +4,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Name** | Nocturne |
+| **Name** | Nocturne: Night Sky Meter |
 | **Subtitle** | Measure Light Pollution |
-| **Bundle ID** | com.nocturne.app |
+| **Bundle ID** | com.nocturnn.app |
 | **SKU** | NOCTURNE-001 |
 | **Primary Category** | Weather |
 | **Secondary Category** | Education |
@@ -121,7 +121,7 @@ which is expected behavior. The app does not crash or error on indoor use.
 
 ## Checklist Before Submission
 
-- [ ] Bundle ID `com.nocturne.app` registered in Apple Developer portal
+- [ ] Bundle ID `com.nocturnn.app` registered in Apple Developer portal
 - [ ] App icon 1024×1024 appears correctly in Xcode asset catalog (no warnings)
 - [ ] Archive succeeds: `Product → Archive` with no errors
 - [ ] Validate App passes with 0 errors (check privacy manifest, entitlements)

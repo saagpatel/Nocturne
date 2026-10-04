@@ -23,7 +23,7 @@ final class HistoryViewModel {
     private let db: DatabaseManager
 
     @ObservationIgnored
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "HistoryViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "HistoryViewModel")
 
     // MARK: - Init
 

@@ -12,9 +12,9 @@ final class AppState {
     @ObservationIgnored
     private let monitor = NWPathMonitor()
     @ObservationIgnored
-    private let monitorQueue = DispatchQueue(label: "com.nocturne.network-monitor")
+    private let monitorQueue = DispatchQueue(label: "com.nocturnn.app.network-monitor")
     @ObservationIgnored
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "AppState")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "AppState")
 
     let databaseManager: DatabaseManager?
     let supabaseService: SupabaseService?

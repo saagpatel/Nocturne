@@ -23,6 +23,8 @@ Nocturne is currently an experimental estimator, not a calibrated professional m
 - iOS 17.0+ device (camera long-exposure required)
 - Supabase project (optional; local-only mode works without it)
 
+The app bundle identifier is `com.nocturnn.app`; the upload build number is 3.
+
 ### Installation
 ```bash
 git clone https://github.com/saagpatel/Nocturne

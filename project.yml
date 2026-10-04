@@ -1,6 +1,6 @@
 name: Nocturne
 options:
-  bundleIdPrefix: com.nocturne
+  bundleIdPrefix: com.nocturnn.app
   deploymentTarget:
     iOS: "17.0"
   createIntermediateGroups: true
@@ -12,6 +12,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     TARGETED_DEVICE_FAMILY: "1"
+    CURRENT_PROJECT_VERSION: 3
     DEVELOPMENT_TEAM: 3TGZFKFNA4
 
 configFiles:
@@ -46,7 +47,7 @@ targets:
       - sdk: Network.framework
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app
         INFOPLIST_FILE: Nocturne/Info.plist
         CODE_SIGN_STYLE: Automatic
 
@@ -62,5 +63,17 @@ targets:
       - target: Nocturne
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nocturne.app.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app.tests
         GENERATE_INFOPLIST_FILE: true
+
+schemes:
+  Nocturne:
+    build:
+      targets:
+        Nocturne: all
+        NocturneTests: [test]
+    test:
+      targets:
+        - NocturneTests
+    archive:
+      config: Release

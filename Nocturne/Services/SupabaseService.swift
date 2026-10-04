@@ -8,7 +8,7 @@ actor SupabaseService {
     private let client: SupabaseClient
     private var tileCache: [String: (tiles: [HeatmapTile], fetchedAt: Date)] = [:]
 
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "SupabaseService")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "SupabaseService")
 
     /// Credentials are validated by AppState before this service is created.
     init(url: URL, anonKey: String) {
