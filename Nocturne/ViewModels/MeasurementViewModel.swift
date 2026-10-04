@@ -42,6 +42,14 @@ final class MeasurementViewModel {
         self.databaseManager = try? DatabaseManager.makeDefault()
     }
 
+    #if DEBUG
+    /// Show the existing result card without opening user data or starting a camera.
+    init(screenshotRecord: MeasurementRecord, database: DatabaseManager) {
+        self.databaseManager = database
+        self.state = .complete(screenshotRecord)
+    }
+    #endif
+
     // MARK: - Session Management
 
     /// Request permissions, configure camera, start preview.
