@@ -2,13 +2,13 @@
 
 Effective July 12, 2026
 
-Nocturne measures night-sky brightness. It does not require an account and does not use advertising or cross-app tracking.
+Nocturne estimates night-sky brightness. It does not require an account and does not use advertising or cross-app tracking.
 
 ## Data Nocturne handles
 
 - Camera frames are processed on your device to calculate a sky-brightness measurement. No photos or camera frames are saved or uploaded.
-- Precise location, altitude, measurement time, device model, sky-brightness result, and optional weather context are stored with each measurement on your device.
-- Community contribution is off by default. If you enable it in Settings and uploads are configured and available, those measurement fields are sent to Nocturne's Supabase-backed community dataset. They are not associated with a name, email address, advertising identifier, or Nocturne account.
+- Saved measurement records contain precise location, altitude, measurement time, device model, brightness values, Bortle class, capture/profile metadata, phone tilt and optional weather context. A displayed result does not guarantee a saved record if the local database is unavailable.
+- Community contribution is off by default. If you enable it in Settings and uploads are configured and available, Nocturne sends the measurement time, coordinates, altitude, sky-brightness result, device model, profile version, cloud context, estimate status and Bortle class to its Supabase-backed community dataset. The upload does not include a name, email address, advertising identifier or Nocturne account.
 - Weather requests send measurement coordinates to Open-Meteo to retrieve cloud cover, even when community contribution is off. History uses Apple reverse geocoding to turn stored coordinates into location names, and the map uses Apple MapKit. These online services are separate from the optional community upload.
 - Apple platform services may provide diagnostics under Apple's own privacy terms. Nocturne does not include a third-party advertising or analytics SDK.
 
@@ -16,9 +16,9 @@ Location is used to validate whether a measurement was taken at night, orient th
 
 ## Your choices
 
-You can deny camera or location permission in iOS Settings. You can disable cellular uploads in Nocturne. Measurements that have not been uploaded remain on your device and are removed when you delete the app.
+You can deny camera or location permission in iOS Settings. In Nocturne's Settings, turn off Contribute measurements to stop future community uploads. This does not delete readings already uploaded. Allow cellular uploads controls whether community uploads can use cellular data. Saved local records are removed when you delete the app.
 
-To request deletion of a contributed measurement, open a private support request and include the measurement timestamp, approximate location, and any other details needed to identify it. Do not post precise location publicly.
+To request deletion of a contributed measurement, use the support link below to start a request without identifying details. It opens a GitHub issue that may be public. Ask for a private channel before providing a measurement timestamp, location or other identifying details. Do not post sensitive information in the issue.
 
 ## Contact
 
