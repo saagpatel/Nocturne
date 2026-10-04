@@ -1,12 +1,19 @@
-# Nocturne — App Store Connect Metadata
+# Nocturne App Store Connect Metadata
 
 ## Identity
 
 | Field | Value |
 |-------|-------|
 | **Name** | Nocturne: Night Sky Meter |
-| **Subtitle** | Measure Light Pollution |
+| **Subtitle** | How Dark Is Your Sky? |
 | **Bundle ID** | com.nocturnn.app |
+
+### Proposed Listing Settings
+
+These are submission choices for the operator to confirm in App Store Connect.
+
+| Field | Value |
+|-------|-------|
 | **SKU** | NOCTURNE-001 |
 | **Primary Category** | Weather |
 | **Secondary Category** | Education |
@@ -19,46 +26,54 @@
 ## Keywords
 
 ```
-light pollution,night sky,bortle scale,dark sky,astronomy,citizen science,sky brightness,star gazing
+light pollution,night sky,bortle,dark sky,astronomy,stargazing,stars,sqm,skyglow
 ```
 
-*(100 character limit)*
+*(100 character limit; counts for all limited fields are below.)*
 
 ---
 
 ## Description
 
-Nocturne uses your iPhone camera to estimate local light pollution. Point it at the night sky and Nocturne captures a fixed exposure, checks measurement conditions, and maps the result to the Bortle scale.
+How dark is the sky above you? Nocturne uses your iPhone camera to estimate sky brightness and map the result to the Bortle scale.
 
-Then see what you're missing: a real-time, side-by-side star field comparison shows your washed-out sky next to the same patch of sky under pristine Bortle Class 1 conditions — thousands of stars, the Milky Way, and deep-sky objects that light pollution hides from view.
-
-You can optionally contribute measurements to a crowdsourced global light-pollution map. Contribution is off by default and controlled in Settings.
+After a reading, Nocturne draws the sky overhead at that place and time twice, from a bundled Gaia DR3 catalog of about 21,000 stars: once at your estimated brightness, once under a Bortle Class 1 sky. The second view is what you're missing. Both are rendered illustrations, not camera images.
 
 KEY FEATURES
 
-• Experimental sky-brightness estimate using your iPhone's camera
-• Automatic Bortle class classification (1–9 scale)
-• Side-by-side star field comparison: your sky vs. a pristine dark sky
-• Interactive global light pollution heatmap powered by community data
-• Measurement validation: tilt detection, daylight rejection, and hot-pixel filtering
-• Weather-aware: cloud cover tagged via Open-Meteo for data quality
-• Provisional device profiles for supported iPhone models
-• Complete measurement history with reverse-geocoded locations
-• Offline-first: all measurements stored locally; community upload is opt-in
+• Sky brightness in mag/arcsec²
+• Bortle class on a scale from 1 to 9
+• Side-by-side star fields based on your reading and a dark-sky reference
+• Rejects readings taken in daylight, at a tilt, or with too many saturated pixels
+• Cloud-cover information from Open-Meteo when weather data is available
+• Brightness calculations for supported iPhone models
+• A history of your saved readings, with date, brightness, and place
 
-BUILT FOR CITIZEN SCIENCE
+WHAT TO EXPECT
 
-Nocturne is an experimental citizen-science tool, not a calibrated professional meter. A fixed capture protocol helps make repeated readings more consistent, but results can vary by device and conditions. Treat values as estimates until the device profiles are validated against traceable physical references.
+Nocturne is an experimental tool, not a calibrated professional meter; results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection. Contributing readings to a community dataset is optional and off by default.
 
 ---
 
 ## Promotional Text
 
-*(Optional — appears above description, can be updated without a new app version)*
+*(Optional promotional field)*
 
 ```
-How dark is your sky tonight? Point your iPhone up and find out — then see the stars you're missing.
+Point your iPhone at the night sky for a Bortle-scale estimate, then see the sky overhead drawn two ways: at your brightness, and under a Bortle 1 dark sky.
 ```
+
+### Field Counts
+
+Python `len` counts the field values, including spaces and description line breaks, without Markdown fences or section headings.
+
+| Field | Characters | Limit |
+|-------|------------|-------|
+| Name | 25 | 30 |
+| Subtitle | 21 | 30 |
+| Promotional text | 156 | 170 |
+| Keywords | 80 | 100 |
+| Description | 1215 | 4000 |
 
 ---
 
@@ -77,44 +92,76 @@ https://github.com/saagpatel/Nocturne/blob/main/PRIVACY.md
 ## Screenshots
 
 ### Required Sizes
-- **6.7" Display** — 1290 × 2796 px (iPhone 16 Pro Max / iPhone 15 Pro Max)
-- **6.1" Display** — 1179 × 2556 px (iPhone 16 / iPhone 15)
+- **6.9-inch iPhone:** 1320 × 2868 px.
+- The current `TARGETED_DEVICE_FAMILY: "1"` targets iPhone only. If family `2` is added, also supply **13-inch iPad:** 2064 × 2752 px.
 
-### Screenshot Plan (4 screenshots per size)
+### Screenshot Plan (4 screenshots for the current iPhone target)
 
-| # | Screen | Simulator State | Headline Overlay |
+| # | Screen | Actual UI State | Headline Overlay |
 |---|--------|-----------------|------------------|
-| 1 | MeasurementView | Camera viewfinder active, night sky framed, Bortle Class 4 result card visible | "See how dark your sky really is." |
-| 2 | ComparisonView | Side-by-side split: left washed-out sky, right Bortle 1 star field with Milky Way visible | "Discover the stars light steals from you." |
-| 3 | HeatmapView | Global heatmap with gradient overlays, user pin highlighted, community data points visible | "Join a global network of sky watchers." |
-| 4 | HistoryView | Measurement log with 5+ entries, Bortle classes, reverse-geocoded locations, timestamps | "Every reading. Every sky. On record." |
+| 1 | Measure | Result from a successful physical-device reading: brightness, Bortle badge, Estimate and See Your Sky. Keep the actual values. | "Estimate your sky's brightness." |
+| 2 | Sky Comparison | Open See Your Sky from that result. Show Your Sky and What You're Missing with their actual rendered star counts. No required Milky Way or object overlay. | "Compare two generated skies." |
+| 3 | History | Actual saved readings with timestamps and location names or coordinates. No minimum entry count. If none were saved, show No Measurements Yet. If the database cannot open, show History Unavailable. | "Browse saved readings." |
+| 4 | Settings | Contribute measurements off and Allow cellular uploads disabled. | "Choose whether to contribute." |
 
 ### How to Take Screenshots
-1. Open Xcode → Simulator → select iPhone 16 Pro Max
-2. Build and run the Nocturne target
-3. Navigate to each screen state (use pre-seeded test data for history and heatmap views)
-4. **Xcode menu: Product → Simulator → Take Screenshot** (saves to Desktop)
-   OR: `xcrun simctl io booted screenshot ~/Desktop/screenshot.png`
-5. Repeat for iPhone 16 (6.1") by switching simulator
-6. Add marketing text overlays in Sketch, Figma, or Canva before uploading
+1. Use a physical iPhone that produces a 1320 × 2868 screenshot for the measurement and comparison captures. Follow the review steps below at night.
+2. Capture the result and tap See Your Sky for the comparison. Do not change readings, star counts or rendered content for marketing.
+3. Open History and Settings for the remaining captures. A simulator can show Settings and the actual empty or unavailable History state. It cannot provide a camera measurement, and this build has no seed-data route.
+4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan.
+5. Add only the planned headline overlays. Check the exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
 
 ---
 
 ## App Review Notes
 
 ```
-Nocturne measures night sky brightness using the iPhone camera. Camera and location permissions
-are required for the core measurement feature.
+Nocturne estimates sky brightness. It requires no account. A measurement needs a
+physical iPhone with a back camera, camera permission and a location fix.
 
-To test the core flow:
-1. Grant camera and location permissions when prompted
-2. Tap "Measure" and point the device at the sky (or a dark ceiling for review purposes)
-3. Hold the device steady for the fixed exposure
-4. View the Bortle class result and the side-by-side star field comparison
-5. Tap "Map" to see the global heatmap with community measurements
+Navigation without a measurement:
+1. On first launch, tap "Skip", or tap "Continue" twice and "Get Started".
+2. Open "Settings". "Contribute measurements" is off by default.
+   "Allow cellular uploads" is disabled until contribution is enabled.
+3. Open "History". With an open database and no saved readings it shows
+   "No Measurements Yet". If the database cannot open it shows "History Unavailable".
+4. Open "Map". With no backend configured it shows "Map Unavailable".
+   The message is "The community map is not available in this version."
+   A configured backend needs networking and data for the viewed region to show
+   colored heatmap circles. "Points" does not show individual community pins.
+   No populated community map is promised in this build.
 
-Note: Measurements taken indoors or in bright conditions will return Bortle Class 9 (most light-polluted),
-which is expected behavior. The app does not crash or error on indoor use.
+Measurement on a physical iPhone:
+1. Open the "Measure" tab and tap "Prepare Camera". Allow camera and location
+   access when prompted. After setup, the preview offers "Measure Sky".
+2. Go outdoors at night, away from bright lights. Point toward the sky as the
+   screen instructs, hold still and tap "Measure Sky". Exposure depends on hardware.
+3. The solar-altitude check uses your location and the current time. It rejects
+   readings unless the sun is below -6 degrees. Phone tilt of 20 degrees or more
+   from zenith, or 1% or more saturated pixels, also causes "Measurement Rejected".
+   A dark ceiling does not bypass these checks or guarantee a Bortle class.
+4. A successful reading shows mag/arcsec², a Bortle badge and "Estimate".
+   Cloud cover is shown when available; otherwise the weather field is "N/A".
+   Tap "See Your Sky" to open "Sky Comparison" with "Your Sky" and
+   "What You're Missing". These generated fields use the reading's location and
+   time. Star counts and optional overlays vary; this is not a live camera match.
+5. "History" lists readings that were saved successfully. Location names can
+   fall back to coordinates. A result does not guarantee a saved history entry.
+
+Daytime or indoor review may produce rejection or a camera/location error rather
+than a result. On a simulator without a suitable back camera, "Prepare Camera"
+shows "Something went wrong" and "No suitable camera found on this device."
+There is no simulated measurement or preloaded-history mode. Use the navigation
+steps above for simulator review and a physical device at night for the core flow.
+
+Community uploads require configured services, a saved reading, contribution
+enabled in "Settings" and an allowed connection. Turning contribution on does not
+upload immediately; pending uploads are retried when the app returns to foreground.
+Weather lookup sends coordinates to Open-Meteo even with contribution off.
+When configured, the Map tab requests heatmap data from the community backend's
+"heatmap_tiles" function using the visible map bounds, whether or not contribution
+is on. Cached data may be used instead of a new request.
+History location names and the map use Apple online services.
 ```
 
 ---
@@ -125,14 +172,18 @@ which is expected behavior. The app does not crash or error on indoor use.
 - [ ] App icon 1024×1024 appears correctly in Xcode asset catalog (no warnings)
 - [ ] Archive succeeds: `Product → Archive` with no errors
 - [ ] Validate App passes with 0 errors (check privacy manifest, entitlements)
-- [ ] All 8 screenshots uploaded (4 per required size)
+- [ ] Four truthful screenshots uploaded at 1320 × 2868 for the 6.9-inch iPhone; existing 1290 × 2796 images replaced
+- [ ] If family `2` is added, 13-inch iPad screenshots also supplied at 2064 × 2752
+- [ ] Measurement and comparison screenshots use a real device result; history shows its actual saved, empty or unavailable state
 - [ ] Description, keywords, subtitle filled in App Store Connect
 - [ ] Price set to Free in Pricing and Availability
 - [ ] Age rating questionnaire complete (4+)
 - [ ] Support URL and Privacy Policy URL provided
 - [ ] Camera and Location usage descriptions present in Info.plist
-- [ ] PrivacyInfo.xcprivacy includes camera, location, and UserDefaults declarations
-- [ ] TestFlight internal test complete (full measurement flow, heatmap visible, history populated)
+- [ ] PrivacyInfo.xcprivacy declares collected Precise Location and Other Data Types for App Functionality, without identity linkage or tracking, and required-reason UserDefaults access (`CA92.1`)
+- [ ] Camera frames are not declared as collected photos; camera permission purpose is in Info.plist
+- [ ] TestFlight internal test records actual outcomes for permission flows, a physical-device night reading, comparison, history persistence and unavailable/error states
+- [ ] Review build's backend configuration, map availability and opt-in upload behavior confirmed; review notes match those outcomes
 - [ ] Submit for Review
 
 ## Copyright

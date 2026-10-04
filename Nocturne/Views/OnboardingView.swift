@@ -14,12 +14,12 @@ struct OnboardingView: View {
         OnboardingStep(
             icon: "iphone.rear.camera",
             title: "Point at the sky, hold still, and measure",
-            description: "Find a clear view of the night sky, hold your phone pointed straight up, and tap Measure. Nocturne captures a fixed exposure and checks the conditions automatically."
+            description: "Find a clear view of the night sky, hold your phone pointed straight up, and tap Measure. Nocturne uses your camera to take a reading and checks the conditions automatically."
         ),
         OnboardingStep(
             icon: "sparkles",
             title: "See what you're missing compared to a pristine sky",
-            description: "Nocturne renders the stars you can see side-by-side with what a perfectly dark sky would reveal — thousands of stars, the Milky Way, and deep-sky objects hidden by light pollution."
+            description: "Nocturne draws two side-by-side star fields: one based on your brightness reading, the other under a Bortle Class 1 dark sky. These are illustrations, not camera images."
         ),
     ]
 

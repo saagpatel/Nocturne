@@ -76,7 +76,7 @@ private struct MapTab: View {
                 ContentUnavailableView(
                     "Map Unavailable",
                     systemImage: "map",
-                    description: Text("Configure Supabase credentials to view the global heatmap.")
+                    description: Text("The community map is not available in this version.")
                 )
                 .navigationTitle("Map")
                 .navigationBarTitleDisplayMode(.inline)
