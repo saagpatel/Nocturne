@@ -16,8 +16,8 @@ settings:
     DEVELOPMENT_TEAM: 3TGZFKFNA4
 
 configFiles:
-  Debug: Config.xcconfig
-  Release: Config.xcconfig
+  Debug: Config.base.xcconfig
+  Release: Config.base.xcconfig
 
 packages:
   Supabase:
@@ -50,6 +50,12 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app
         INFOPLIST_FILE: Nocturne/Info.plist
         CODE_SIGN_STYLE: Automatic
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: Apple Distribution
+          PROVISIONING_PROFILE_SPECIFIER: Nocturne App Store
+          DEVELOPMENT_TEAM: 3TGZFKFNA4
 
   NocturneTests:
     type: bundle.unit-test
