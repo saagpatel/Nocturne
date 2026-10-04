@@ -9,6 +9,7 @@ Nocturne measures night-sky brightness. It does not require an account and does 
 - Camera frames are processed on your device to calculate a sky-brightness measurement. No photos or camera frames are saved or uploaded.
 - Precise location, altitude, measurement time, device model, sky-brightness result, and optional weather context are stored with each measurement on your device.
 - Community contribution is off by default. If you enable it in Settings and uploads are configured and available, those measurement fields are sent to Nocturne's Supabase-backed community dataset. They are not associated with a name, email address, advertising identifier, or Nocturne account.
+- Weather requests send measurement coordinates to Open-Meteo to retrieve cloud cover, even when community contribution is off. History uses Apple reverse geocoding to turn stored coordinates into location names, and the map uses Apple MapKit. These online services are separate from the optional community upload.
 - Apple platform services may provide diagnostics under Apple's own privacy terms. Nocturne does not include a third-party advertising or analytics SDK.
 
 Location is used to validate whether a measurement was taken at night, orient the star comparison, label local history, and place contributed measurements on the community map. Camera and location access are requested only while you use the app.
