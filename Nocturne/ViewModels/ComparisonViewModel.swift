@@ -25,8 +25,10 @@ final class ComparisonViewModel {
         UserSkyScene.limitingMagnitude(for: measurement.skyBrightness)
     }
 
-    var userStarCount: Int { userScene?.renderedStarCount ?? 0 }
-    var pristineStarCount: Int { pristineScene?.renderedStarCount ?? 0 }
+    // Stored so SwiftUI observes them; SpriteKit renders later, in didMove(to:),
+    // and its own counter is not observable.
+    private(set) var userStarCount = 0
+    private(set) var pristineStarCount = 0
 
     init(measurement: MeasurementRecord) {
         self.measurement = measurement
@@ -81,6 +83,9 @@ final class ComparisonViewModel {
                 centerRA: zenith.ra,
                 centerDec: zenith.dec
             )
+
+            userStarCount = userScene?.projectedStars().count ?? 0
+            pristineStarCount = pristineScene?.projectedStars().count ?? 0
 
             isLoading = false
         } catch {
