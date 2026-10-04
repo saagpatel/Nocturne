@@ -24,6 +24,8 @@ Nocturne is currently an experimental estimator, not a calibrated professional m
 - iOS 17.0+ device (camera long-exposure required)
 - Supabase project (optional; local-only mode works without it)
 
+The app bundle identifier is `com.nocturnn.app`; the upload build number is 3.
+
 ### Installation
 ```bash
 git clone https://github.com/saagpatel/Nocturne
@@ -31,6 +33,8 @@ cd Nocturne
 make generate
 open Nocturne.xcodeproj
 ```
+
+XcodeGen uses `Config.base.xcconfig`, which provides non-secret placeholder values and optionally includes `Config.xcconfig`. To enable Supabase uploads, copy `Config.xcconfig.example` to `Config.xcconfig` and replace its placeholders with your project URL and anon key. The local config is gitignored; generation also works without it.
 
 ### Usage
 Deploy to a device. Go outside after astronomical twilight (when the sun is more than 18° below the horizon). Point the phone straight up and tap **Measure**. The 4-gate validator will guide you if conditions aren't met.

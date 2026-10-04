@@ -44,7 +44,7 @@ Specifically verified on `origin/main`:
   - ExportOptions.plist
 - App Store identity (from `APPSTORE-METADATA.md`):
   - Name: **Nocturne**, Subtitle: **Measure Light Pollution**
-  - Bundle ID: `com.nocturne.app`, SKU: `NOCTURNE-001`
+  - Bundle ID: `com.nocturnn.app`, SKU: `NOCTURNE-001`
   - Categories: Weather (primary) + Education (secondary)
   - Age Rating: 4+, Price: Free, Availability: All territories
 - Default branch: `main`
@@ -133,7 +133,7 @@ This is consistent with the cluster's maturity at 4 members.
 
 When ready to ship publicly:
 
-1. **App Store Connect record for `com.nocturne.app`** in Weather
+1. **App Store Connect record for `com.nocturnn.app`** in Weather
    category. Citizen-science framing in the listing copy will help
    App Store editorial pickup.
 2. **Backend hosting** — the crowdsourced heatmap needs a server.
@@ -241,7 +241,7 @@ Wavelength / RoomTone / Liminal need triage) classify by this axis.
 | Last substantive commit | `3a1c1d6` chore: add fastlane deliver config for App Store metadata upload |
 | Default branch | `main` |
 | Build system | **iOS / Swift / SwiftUI / AVFoundation / XCTest** |
-| Bundle ID | `com.nocturne.app` |
+| Bundle ID | `com.nocturnn.app` |
 | Phases shipped | 0-4 per memory; Phase 4 polish merged on canonical main |
 | Release scaffolding | **`APPSTORE-METADATA.md` + fastlane deliver + refreshed screenshots + ExportOptions.plist + Privacy Manifest + DEVELOPMENT_TEAM** |
 | Distribution channel | **App Store Connect** (Weather + Education) |

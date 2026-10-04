@@ -7,7 +7,7 @@ import os
 actor WeatherService {
 
     private let session: URLSession
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "WeatherService")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "WeatherService")
 
     init(session: URLSession = .shared) {
         self.session = session

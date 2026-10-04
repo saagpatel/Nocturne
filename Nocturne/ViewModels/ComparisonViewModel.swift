@@ -14,7 +14,7 @@ final class ComparisonViewModel {
 
     let measurement: MeasurementRecord
 
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "ComparisonViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "ComparisonViewModel")
 
     // MARK: - Computed Stats
 

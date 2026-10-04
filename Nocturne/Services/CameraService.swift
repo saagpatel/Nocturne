@@ -7,8 +7,8 @@ actor CameraService {
 
     nonisolated(unsafe) let session = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
-    private let sessionQueue = DispatchQueue(label: "com.nocturne.camera")
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "CameraService")
+    private let sessionQueue = DispatchQueue(label: "com.nocturnn.app.camera")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "CameraService")
 
     private var captureDevice: AVCaptureDevice?
     private(set) var actualMaxExposure: Double = 0
