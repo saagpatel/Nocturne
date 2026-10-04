@@ -1,15 +1,17 @@
 # Nocturne Privacy Policy
 
-Effective July 12, 2026
+Effective October 4, 2026
 
 Nocturne estimates night-sky brightness. It does not require an account and does not use advertising or cross-app tracking.
 
 ## Data Nocturne handles
 
 - Camera frames are processed on your device to calculate a sky-brightness measurement. No photos or camera frames are saved or uploaded.
+- Device motion is read on your device only to check phone tilt.
 - Saved measurement records contain precise location, altitude, measurement time, device model, brightness values, Bortle class, capture/profile metadata, phone tilt and optional weather context. A displayed result does not guarantee a saved record if the local database is unavailable.
 - Community contribution is off by default. If you enable it in Settings and uploads are configured and available, Nocturne sends the measurement time, coordinates, altitude, sky-brightness result, device model, profile version, cloud context, estimate status and Bortle class to its Supabase-backed community dataset. The upload does not include a name, email address, advertising identifier or Nocturne account.
 - Weather requests send measurement coordinates to Open-Meteo to retrieve cloud cover, even when community contribution is off. History uses Apple reverse geocoding to turn stored coordinates into location names, and the map uses Apple MapKit. These online services are separate from the optional community upload.
+- When the community backend is configured, the Map tab sends the visible map bounds to its Supabase-backed heatmap function to request community data, whether or not contribution is on. Cached data may be used instead of a new request.
 - Apple platform services may provide diagnostics under Apple's own privacy terms. Nocturne does not include a third-party advertising or analytics SDK.
 
 Location is used to validate whether a measurement was taken at night, orient the star comparison, label local history, and place contributed measurements on the community map. Camera and location access are requested only while you use the app.

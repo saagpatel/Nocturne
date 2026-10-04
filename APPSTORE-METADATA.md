@@ -5,7 +5,7 @@
 | Field | Value |
 |-------|-------|
 | **Name** | Nocturne: Night Sky Meter |
-| **Subtitle** | Estimate Sky Brightness |
+| **Subtitle** | How Dark Is Your Sky? |
 | **Bundle ID** | com.nocturnn.app |
 
 ### Proposed Listing Settings
@@ -26,7 +26,7 @@ These are submission choices for the operator to confirm in App Store Connect.
 ## Keywords
 
 ```
-light pollution,night sky,bortle,dark sky,astronomy,sky brightness,stars
+light pollution,night sky,bortle,dark sky,astronomy,stargazing,stars,sqm,skyglow
 ```
 
 *(100 character limit; counts for all limited fields are below.)*
@@ -37,23 +37,21 @@ light pollution,night sky,bortle,dark sky,astronomy,sky brightness,stars
 
 How dark is the sky above you? Nocturne uses your iPhone camera to estimate sky brightness and map the result to the Bortle scale.
 
-After a reading, compare two generated star fields. One uses your brightness estimate. The other uses a Bortle Class 1 reference. Both use a bundled Gaia DR3 star catalog and the sky overhead at the reading's location and time.
-
-These are illustrations based on the reading, rather than live views through the camera.
+After a reading, Nocturne draws the sky overhead at that place and time twice, from a bundled Gaia DR3 catalog of about 21,000 stars: once at your estimated brightness, once under a Bortle Class 1 sky. The second view is what you're missing. Both are rendered illustrations, not camera images.
 
 KEY FEATURES
 
-• Experimental sky-brightness estimate in mag/arcsec²
-• Bortle class estimate on a scale from 1 to 9
+• Sky brightness in mag/arcsec²
+• Bortle class on a scale from 1 to 9
 • Side-by-side star fields based on your reading and a dark-sky reference
-• Checks for daylight, phone tilt and excessive saturated pixels
-• Cloud-cover tags from Open-Meteo when weather data is available
-• Provisional device profiles for supported iPhone models
-• Browse saved readings with dates, brightness and location names or coordinates
+• Rejects readings taken in daylight, at a tilt, or with too many saturated pixels
+• Cloud-cover information from Open-Meteo when weather data is available
+• Brightness calculations for supported iPhone models
+• A history of your saved readings, with date, brightness, and place
 
-KNOW WHAT YOU'RE MEASURING
+WHAT TO EXPECT
 
-Nocturne is an experimental tool, not a calibrated professional meter. Results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection.
+Nocturne is an experimental tool, not a calibrated professional meter; results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection. Contributing readings to a community dataset is optional and off by default.
 
 ---
 
@@ -62,7 +60,7 @@ Nocturne is an experimental tool, not a calibrated professional meter. Results v
 *(Optional promotional field)*
 
 ```
-How dark is your sky tonight? Get an experimental brightness estimate and compare two generated star fields.
+Point your iPhone at the night sky for a Bortle-scale estimate, then see the sky overhead drawn two ways: at your brightness, and under a Bortle 1 dark sky.
 ```
 
 ### Field Counts
@@ -72,10 +70,10 @@ Python `len` counts the field values, including spaces and description line brea
 | Field | Characters | Limit |
 |-------|------------|-------|
 | Name | 25 | 30 |
-| Subtitle | 23 | 30 |
-| Promotional text | 108 | 170 |
-| Keywords | 72 | 100 |
-| Description | 1196 | 4000 |
+| Subtitle | 21 | 30 |
+| Promotional text | 156 | 170 |
+| Keywords | 80 | 100 |
+| Description | 1215 | 4000 |
 
 ---
 
@@ -128,6 +126,7 @@ Navigation without a measurement:
 3. Open "History". With an open database and no saved readings it shows
    "No Measurements Yet". If the database cannot open it shows "History Unavailable".
 4. Open "Map". With no backend configured it shows "Map Unavailable".
+   The message is "The community map is not available in this version."
    A configured backend needs networking and data for the viewed region to show
    colored heatmap circles. "Points" does not show individual community pins.
    No populated community map is promised in this build.
@@ -159,6 +158,9 @@ Community uploads require configured services, a saved reading, contribution
 enabled in "Settings" and an allowed connection. Turning contribution on does not
 upload immediately; pending uploads are retried when the app returns to foreground.
 Weather lookup sends coordinates to Open-Meteo even with contribution off.
+When configured, the Map tab requests heatmap data from the community backend's
+"heatmap_tiles" function using the visible map bounds, whether or not contribution
+is on. Cached data may be used instead of a new request.
 History location names and the map use Apple online services.
 ```
 
