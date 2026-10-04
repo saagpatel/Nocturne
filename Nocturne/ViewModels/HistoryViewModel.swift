@@ -31,6 +31,15 @@ final class HistoryViewModel {
         self.db = db
     }
 
+    #if DEBUG
+    convenience init(db: DatabaseManager, screenshotLocationNames: [String: String]) {
+        self.init(db: db)
+        // Keep the normal database fetch; only prime the geocoding cache so
+        // screenshot place names are deterministic and need no network.
+        geocodedNames = screenshotLocationNames
+    }
+    #endif
+
     // MARK: - Load
 
     /// Fetches all measurements from the local database, sorted newest-first,

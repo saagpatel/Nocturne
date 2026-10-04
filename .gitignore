@@ -22,3 +22,7 @@ __pycache__/
 
 # distribution-kit lane receipts
 dist-receipts/
+
+# Reproducible App Store captures (uploaded separately)
+screenshots/appstore/
+.build/shots/

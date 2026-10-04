@@ -97,19 +97,19 @@ https://github.com/saagpatel/Nocturne/blob/main/PRIVACY.md
 
 ### Screenshot Plan (4 screenshots for the current iPhone target)
 
-| # | Screen | Actual UI State | Headline Overlay |
-|---|--------|-----------------|------------------|
-| 1 | Measure | Result from a successful physical-device reading: brightness, Bortle badge, Estimate and See Your Sky. Keep the actual values. | "Estimate your sky's brightness." |
-| 2 | Sky Comparison | Open See Your Sky from that result. Show Your Sky and What You're Missing with their actual rendered star counts. No required Milky Way or object overlay. | "Compare two generated skies." |
-| 3 | History | Actual saved readings with timestamps and location names or coordinates. No minimum entry count. If none were saved, show No Measurements Yet. If the database cannot open, show History Unavailable. | "Browse saved readings." |
-| 4 | Settings | Contribute measurements off and Allow cellular uploads disabled. | "Choose whether to contribute." |
+| n | Screen | Actual UI State | Device / Size | Capture | Headline Overlay |
+|---|--------|-----------------|---------------|---------|------------------|
+| 1 | Measure | Production completed-result card from the stored synthetic San Francisco reading: 18.3 mag/arcsec², Bortle 7, Estimate, 8% cloud cover and See Your Sky. No camera imagery. | iPhone 18 Pro Max (6.9-inch), 1320 × 2868 px | Simulator: -AppStoreScreenshot 1 | "Estimate your sky's brightness." |
+| 2 | Sky Comparison | Open See Your Sky from a successful physical-device result. Show Your Sky and What You're Missing with their actual rendered star counts. No required Milky Way or object overlay. | 6.9-inch iPhone, 1320 × 2868 px | OPERATOR: capture on device | "Compare two generated skies." |
+| 3 | History | Production History view loads four synthetic readings from its isolated GRDB database: San Francisco, Joshua Tree, Death Valley and Point Reyes, with fixed varied dates and Bortle classes 7, 3, 1 and 4. Cached place names require no geocoding. | iPhone 18 Pro Max (6.9-inch), 1320 × 2868 px | Simulator: -AppStoreScreenshot 3 | "Browse saved readings." |
+| 4 | Sky Comparison | Production comparison opened from History for the same stored San Francisco reading as shot 1. Your Sky and What You're Missing use the bundled Gaia catalog and renderer's actual star counts. | iPhone 18 Pro Max (6.9-inch), 1320 × 2868 px | Simulator: -AppStoreScreenshot 4 | "See what you're missing." |
 
 ### How to Take Screenshots
-1. Use a physical iPhone that produces a 1320 × 2868 screenshot for the measurement and comparison captures. Follow the review steps below at night.
-2. Capture the result and tap See Your Sky for the comparison. Do not change readings, star counts or rendered content for marketing.
-3. Open History and Settings for the remaining captures. A simulator can show Settings and the actual empty or unavailable History state. It cannot provide a camera measurement, and this build has no seed-data route.
-4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan.
-5. Add only the planned headline overlays. Check the exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
+1. Run `bash scripts/capture-screenshots.sh` from the repository on a Mac with Xcode, XcodeGen (if the project has not been generated), and an available **iPhone 18 Pro Max** simulator. The script generates the project if missing, builds Debug once, captures shots **1**, **3** and **4** as `screenshots/appstore/iphone-18-pro-max/01.png`, `03.png` and `04.png`, and verifies 1320 × 2868 dimensions. It first launches the app, waits 2 seconds and terminates it to clear the cross-app status bar back link. These generated files are gitignored.
+2. Debug-only `-AppStoreScreenshot <n>` bypasses onboarding without changing saved preferences or the user database. Shots 1, 3 and 4 use synthetic readings inserted into an isolated, migrated GRDB database before the views load; they require no permissions, live services, random values or current dates. Release does not include this mode. The default settling delay is 4 seconds; use `SHOT_WAIT_SECONDS` or per-shot `SHOT_1_WAIT_SECONDS` / `SHOT_3_WAIT_SECONDS` / `SHOT_4_WAIT_SECONDS` to override it. `DERIVED` overrides the default `.build/shots` build directory.
+3. **OPERATOR: capture on device** for shot **2**. Use a physical iPhone producing 1320 × 2868 screenshots and follow the review steps below at night. Capture a successful reading, then tap See Your Sky for its comparison. Keep the actual reading, star counts and rendered content. The app has no mock camera path; the script skips this physical-device shot. Launch argument 2 shows an operator instruction, which must not be uploaded.
+4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan. The scripted result, history and comparison show plausible Debug fixtures, not evidence of physical measurements.
+5. Add only the planned headline overlays after capture; the script outputs the real app UI without overlays. Check the final exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
 
 ---
 
