@@ -97,19 +97,19 @@ https://github.com/saagpatel/Nocturne/blob/main/PRIVACY.md
 
 ### Screenshot Plan (4 screenshots for the current iPhone target)
 
-| # | Screen | Actual UI State | Headline Overlay |
-|---|--------|-----------------|------------------|
-| 1 | Measure | Result from a successful physical-device reading: brightness, Bortle badge, Estimate and See Your Sky. Keep the actual values. | "Estimate your sky's brightness." |
-| 2 | Sky Comparison | Open See Your Sky from that result. Show Your Sky and What You're Missing with their actual rendered star counts. No required Milky Way or object overlay. | "Compare two generated skies." |
-| 3 | History | Actual saved readings with timestamps and location names or coordinates. No minimum entry count. If none were saved, show No Measurements Yet. If the database cannot open, show History Unavailable. | "Browse saved readings." |
-| 4 | Settings | Contribute measurements off and Allow cellular uploads disabled. | "Choose whether to contribute." |
+| n | Screen | Actual UI State | Device / Size | Capture | Headline Overlay |
+|---|--------|-----------------|---------------|---------|------------------|
+| 1 | Measure | Result from a successful physical-device reading: brightness, Bortle badge, Estimate and See Your Sky. Keep the actual values. | 6.9-inch iPhone, 1320 × 2868 px | OPERATOR: capture on device | "Estimate your sky's brightness." |
+| 2 | Sky Comparison | Open See Your Sky from that same physical-device result. Show Your Sky and What You're Missing with their actual rendered star counts. No required Milky Way or object overlay. | 6.9-inch iPhone, 1320 × 2868 px | OPERATOR: capture on device | "Compare two generated skies." |
+| 3 | History | Deterministic No Measurements Yet state from an isolated, empty in-memory database. The production History view is used; no synthetic readings are presented as saved physical measurements. | iPhone 18 Pro Max (6.9-inch), 1320 × 2868 px | Simulator: -AppStoreScreenshot 3 | "Browse saved readings." |
+| 4 | Settings | Contribute measurements off and Allow cellular uploads disabled. Screenshot-only local bindings reset to false on every launch. | iPhone 18 Pro Max (6.9-inch), 1320 × 2868 px | Simulator: -AppStoreScreenshot 4 | "Choose whether to contribute." |
 
 ### How to Take Screenshots
-1. Use a physical iPhone that produces a 1320 × 2868 screenshot for the measurement and comparison captures. Follow the review steps below at night.
-2. Capture the result and tap See Your Sky for the comparison. Do not change readings, star counts or rendered content for marketing.
-3. Open History and Settings for the remaining captures. A simulator can show Settings and the actual empty or unavailable History state. It cannot provide a camera measurement, and this build has no seed-data route.
-4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan.
-5. Add only the planned headline overlays. Check the exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
+1. Run `bash scripts/capture-screenshots.sh` from the repository on a Mac with Xcode, XcodeGen (if the project has not been generated), and an available **iPhone 18 Pro Max** simulator. The script generates the project if missing, builds Debug once, captures shots **3** and **4** as `screenshots/appstore/iphone-18-pro-max/03.png` and `04.png`, and verifies 1320 × 2868 dimensions. These generated files are gitignored.
+2. Debug-only `-AppStoreScreenshot <n>` bypasses onboarding without changing saved preferences or the user database. Shots 3 and 4 require no permissions, live services, random values or current dates. Release does not include this mode. The default settling delay is 4 seconds; use `SHOT_WAIT_SECONDS` or per-shot `SHOT_3_WAIT_SECONDS` / `SHOT_4_WAIT_SECONDS` to override it. `DERIVED` overrides the default `.build/shots` build directory.
+3. **OPERATOR: capture on device** for shots **1** and **2**. Use a physical iPhone producing 1320 × 2868 screenshots and follow the review steps below at night. Capture the successful result, then tap See Your Sky for its comparison. Keep the actual reading, star counts and rendered content. The app has no mock camera path; the script skips both shots to preserve the plan's same-physical-result requirement. Launch arguments 1 and 2 show an operator instruction, which must not be uploaded.
+4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan. The scripted History screenshot deliberately uses the plan's permitted empty state.
+5. Add only the planned headline overlays after capture; the script outputs the real app UI without overlays. Check the final exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
 
 ---
 
