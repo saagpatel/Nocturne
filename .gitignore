@@ -19,3 +19,6 @@ Config.xcconfig
 # Python
 __pycache__/
 *.pyc
+
+# distribution-kit lane receipts
+dist-receipts/
