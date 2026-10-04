@@ -23,6 +23,26 @@ final class SkySceneTests: XCTestCase {
         XCTAssertEqual(result, 5.5, accuracy: 0.01)
     }
 
+    // MARK: - Comparison counts
+
+    @MainActor
+    func testProjectedStarCount_isKnownBeforeRenderingAndMatchesRender() {
+        // The comparison labels read the count before SpriteKit calls didMove(to:),
+        // so it must not depend on rendering having happened.
+        let scene = PristineSkyScene(
+            size: CGSize(width: 300, height: 500),
+            stars: makeSampleStars(),
+            centerRA: 180.0,
+            centerDec: 30.0
+        )
+        let projected = scene.projectedStars().count
+        XCTAssertGreaterThan(projected, 0)
+        XCTAssertEqual(scene.renderedStarCount, 0)
+
+        scene.renderStars()
+        XCTAssertEqual(scene.renderedStarCount, projected)
+    }
+
     // MARK: - Scene Star Counts (structural)
 
     func testPristineScene_moreStarsThanUser() {
