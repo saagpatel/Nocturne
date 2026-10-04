@@ -12,7 +12,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     TARGETED_DEVICE_FAMILY: "1"
-    CURRENT_PROJECT_VERSION: 3
+    CURRENT_PROJECT_VERSION: "4"
     DEVELOPMENT_TEAM: 3TGZFKFNA4
 
 configFiles:
@@ -47,6 +47,7 @@ targets:
       - sdk: Network.framework
     settings:
       base:
+        TARGETED_DEVICE_FAMILY: "1"
         PRODUCT_BUNDLE_IDENTIFIER: com.nocturnn.app
         INFOPLIST_FILE: Nocturne/Info.plist
         CODE_SIGN_STYLE: Automatic

@@ -5,7 +5,7 @@
 DK_PRODUCT_NAME="Nocturne"
 DK_BUNDLE_ID="com.nocturnn.app"
 DK_VERSION="1.0"
-DK_BUILD_NUMBER="3"
+DK_BUILD_NUMBER="4"
 DK_PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DK_SCHEME="Nocturne"
 DK_XCODE_PROJECT="Nocturne.xcodeproj"
