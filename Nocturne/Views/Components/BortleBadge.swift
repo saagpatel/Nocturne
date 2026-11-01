@@ -1,8 +1,11 @@
 import SwiftUI
 
 /// Colored badge displaying a Bortle class (1–9) with description.
+/// `compact` shows only the colored tile, for list rows where the text label would be squeezed into a
+/// word-per-line column; VoiceOver still reads the full class and description.
 struct BortleBadge: View {
     let bortleClass: Int
+    var compact = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -13,13 +16,15 @@ struct BortleBadge: View {
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Bortle Class \(bortleClass)")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(.white)
-                Text(description)
-                    .font(.system(size: 13, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.6))
+            if !compact {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Bortle Class \(bortleClass)")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text(description)
+                        .font(.system(size: 13, weight: .regular))
+                        .foregroundStyle(.white.opacity(0.6))
+                }
             }
         }
         .accessibilityElement(children: .combine)

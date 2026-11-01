@@ -72,7 +72,7 @@ private struct MeasurementRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            BortleBadge(bortleClass: record.bortleClass)
+            BortleBadge(bortleClass: record.bortleClass, compact: true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(locationName)
