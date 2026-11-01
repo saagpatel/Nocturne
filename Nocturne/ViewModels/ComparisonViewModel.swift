@@ -25,8 +25,10 @@ final class ComparisonViewModel {
         UserSkyScene.limitingMagnitude(for: measurement.skyBrightness)
     }
 
-    var userStarCount: Int { userScene?.renderedStarCount ?? 0 }
-    var pristineStarCount: Int { pristineScene?.renderedStarCount ?? 0 }
+    // Stored, not read from the scenes: a scene's rendered count is only set once SpriteKit presents it,
+    // which SwiftUI never observes, so the labels showed "0 stars".
+    private(set) var userStarCount = 0
+    private(set) var pristineStarCount = 0
 
     init(measurement: MeasurementRecord) {
         self.measurement = measurement
@@ -81,6 +83,9 @@ final class ComparisonViewModel {
                 centerRA: zenith.ra,
                 centerDec: zenith.dec
             )
+
+            userStarCount = userScene?.visibleStars().count ?? 0
+            pristineStarCount = pristineScene?.visibleStars().count ?? 0
 
             isLoading = false
         } catch {

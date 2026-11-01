@@ -77,33 +77,40 @@ class SkyScene: SKScene {
 
     // MARK: - Star Rendering
 
-    /// Project and render all stars onto the scene. Override in subclasses to filter.
-    func renderStars() {
-        removeAllChildren()
-        renderedStarCount = 0
-
-        let starsToRender = filteredStars()
+    /// Stars that pass the subclass filter and land on screen (with a small margin), with their positions.
+    /// Shared by rendering and by the comparison's star counts, which SwiftUI must read before the scene
+    /// is presented (the rendered count is only known after `didMove(to:)`).
+    func visibleStars() -> [(star: Star, point: CGPoint)] {
         let fieldRadians = fieldDegrees * .pi / 180.0
         let pixelsPerRadian = min(size.width, size.height) / fieldRadians
 
-        for star in starsToRender {
+        return filteredStars().compactMap { star in
             guard let projected = Astrometry.gnomonicProject(
                 starRA: star.ra,
                 starDec: star.dec,
                 centerRA: centerRA,
                 centerDec: centerDec
-            ) else { continue }
+            ) else { return nil }
 
             let screenX = size.width / 2.0 + projected.x * pixelsPerRadian
             let screenY = size.height / 2.0 + projected.y * pixelsPerRadian
 
             // Skip if off-screen with margin
             guard screenX > -20, screenX < size.width + 20,
-                  screenY > -20, screenY < size.height + 20 else { continue }
+                  screenY > -20, screenY < size.height + 20 else { return nil }
+            return (star, CGPoint(x: screenX, y: screenY))
+        }
+    }
 
+    /// Project and render all stars onto the scene. Override `filteredStars()` in subclasses to filter.
+    func renderStars() {
+        removeAllChildren()
+        renderedStarCount = 0
+
+        for (star, point) in visibleStars() {
             let texture = textureForMagnitude(star.vmag)
             let sprite = SKSpriteNode(texture: texture)
-            sprite.position = CGPoint(x: screenX, y: screenY)
+            sprite.position = point
             sprite.alpha = opacityForMagnitude(star.vmag)
             sprite.color = colorForBV(star.colorIndex)
             sprite.colorBlendFactor = star.colorIndex != nil ? 1.0 : 0

@@ -54,6 +54,24 @@ final class SkySceneTests: XCTestCase {
         )
     }
 
+    func testVisibleStarCountIsKnownBeforeRenderingAndMatchesIt() {
+        // The comparison labels read the count before SpriteKit presents the scene; it must not be 0 then,
+        // and it must equal what rendering draws.
+        let scene = UserSkyScene(
+            size: CGSize(width: 300, height: 500),
+            stars: makeSampleStars(),
+            centerRA: 180.0,
+            centerDec: 30.0,
+            skyBrightness: 21.6
+        )
+        let before = scene.visibleStars().count
+        XCTAssertGreaterThan(before, 0)
+        XCTAssertEqual(scene.renderedStarCount, 0)
+
+        scene.renderStars()
+        XCTAssertEqual(scene.renderedStarCount, before)
+    }
+
     // MARK: - Helpers
 
     private func makeSampleStars() -> [Star] {
