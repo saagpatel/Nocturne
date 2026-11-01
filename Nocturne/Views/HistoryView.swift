@@ -70,24 +70,34 @@ private struct MeasurementRow: View {
         return formatter
     }()
 
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
-        HStack(spacing: 12) {
+        // At accessibility text sizes a single row squeezed the place name to "Des…" and wrapped the unit one
+        // syllable per line; stack the parts instead.
+        let stacked = typeSize.isAccessibilitySize
+        let layout = stacked
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 12))
+        layout {
             BortleBadge(bortleClass: record.bortleClass, compact: true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(locationName)
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .lineLimit(1)
+                    .lineLimit(stacked ? 3 : 1)
 
                 Text(Self.dateFormatter.string(from: record.measuredAt))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
-            Spacer()
+            if !stacked {
+                Spacer()
+            }
 
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: stacked ? .leading : .trailing, spacing: 4) {
                 Text(String(format: "%.1f", record.skyBrightness))
                     .font(.subheadline.monospacedDigit())
                     .foregroundStyle(.primary)
