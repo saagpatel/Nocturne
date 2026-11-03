@@ -19,6 +19,26 @@ final class DatabaseManagerTests: XCTestCase {
         }
     }
 
+    func testFreshInstallCreatesTheOnDiskDatabase() throws {
+        // A fresh install has no database file yet; opening must create it, migrate it, and only then exclude
+        // it from backup. The directory name has a space, like the real "Application Support": a
+        // percent-encoded path pointed SQLite at "Application%20Support" and the open failed.
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("Application Support \(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent(DatabaseConstants.localDatabaseName)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.path(percentEncoded: false)))
+
+        let manager = try DatabaseManager.make(at: url)
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path(percentEncoded: false)))
+        let values = try url.resourceValues(forKeys: [.isExcludedFromBackupKey])
+        XCTAssertEqual(values.isExcludedFromBackup, true)
+        let count = try manager.dbQueue.read { db in try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM measurements") }
+        XCTAssertEqual(count, 0)
+    }
+
     func testInsertAndReadMeasurement() throws {
         let manager = try DatabaseManager.makeInMemory()
 
