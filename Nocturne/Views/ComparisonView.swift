@@ -116,28 +116,27 @@ struct ComparisonView: View {
 
     // MARK: - Stat Bar
 
+    /// The badge gets its own row: squeezed into a third of the bar, longer class
+    /// descriptions ("Suburban/Urban Transition") wrapped onto five lines.
     private var statBar: some View {
-        HStack(spacing: 0) {
-            statItem(
-                value: String(format: "%.1f", viewModel.skyBrightness),
-                unit: "mag/arcsec²"
-            )
-
-            Divider()
-                .frame(height: 32)
-                .background(Color.white.opacity(0.2))
-
+        VStack(spacing: 16) {
             BortleBadge(bortleClass: viewModel.bortleClass)
-                .frame(maxWidth: .infinity)
 
-            Divider()
-                .frame(height: 32)
-                .background(Color.white.opacity(0.2))
+            HStack(spacing: 0) {
+                statItem(
+                    value: String(format: "%.1f", viewModel.skyBrightness),
+                    unit: "mag/arcsec²"
+                )
 
-            statItem(
-                value: String(format: "%.1f", viewModel.limitingMagnitude),
-                unit: "limiting mag"
-            )
+                Divider()
+                    .frame(height: 32)
+                    .background(Color.white.opacity(0.2))
+
+                statItem(
+                    value: String(format: "%.1f", viewModel.limitingMagnitude),
+                    unit: "limiting mag"
+                )
+            }
         }
     }
 
