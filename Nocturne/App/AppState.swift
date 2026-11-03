@@ -48,6 +48,12 @@ final class AppState {
         }
         #endif
         self.databaseManager = try? DatabaseManager.makeDefault()
+        guard FeatureFlags.communityEnabled else {
+            // Community features are off: never create a client for the
+            // configured backend or watch the network for upload retries.
+            self.supabaseService = nil
+            return
+        }
         // Only initialize Supabase if properly configured.
         // Gracefully skip if Config.xcconfig is not set up.
         if let urlString = Bundle.main.infoDictionary?["SUPABASE_URL"] as? String,
@@ -77,6 +83,7 @@ final class AppState {
 
     /// Called when app returns to foreground. Triggers pending upload flush if network allows.
     func handleForeground() async {
+        guard FeatureFlags.communityEnabled else { return }
         guard isConnected else { return }
         guard isOnWiFi || allowCellularUploads else {
             logger.info("Network available but not on Wi-Fi; cellular uploads disabled")

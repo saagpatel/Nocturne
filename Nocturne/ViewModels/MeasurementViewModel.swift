@@ -205,6 +205,7 @@ final class MeasurementViewModel {
                     try await db.dbQueue.write { database in
                         try record.insert(database)
                         // Enqueue for upload
+                        guard FeatureFlags.communityEnabled else { return }
                         try database.execute(
                             sql: """
                                 INSERT INTO upload_queue (measurement_id, queued_at)

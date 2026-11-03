@@ -36,10 +36,12 @@ struct NocturneApp: App {
                             Label("Measure", systemImage: "moon.stars.fill")
                         }
 
-                    MapTab(supabase: appState.supabaseService)
-                        .tabItem {
-                            Label("Map", systemImage: "map.fill")
-                        }
+                    if FeatureFlags.communityEnabled {
+                        MapTab(supabase: appState.supabaseService)
+                            .tabItem {
+                                Label("Map", systemImage: "map.fill")
+                            }
+                    }
 
                     HistoryTab(db: appState.databaseManager)
                         .tabItem {
@@ -241,9 +243,11 @@ private struct AppStoreScreenshotView: View {
             .tabItem { Label("Measure", systemImage: "moon.stars.fill") }
             .tag(1)
 
-            MapTab(supabase: nil)
-                .tabItem { Label("Map", systemImage: "map.fill") }
-                .tag(0)
+            if FeatureFlags.communityEnabled {
+                MapTab(supabase: nil)
+                    .tabItem { Label("Map", systemImage: "map.fill") }
+                    .tag(0)
+            }
 
             HistoryView(
                 db: database,
