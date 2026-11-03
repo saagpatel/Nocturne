@@ -4,7 +4,7 @@ import SwiftUI
 ///
 /// Tapping a row navigates to `ComparisonView` for that measurement.
 /// Each row shows the Bortle class badge, reverse-geocoded location name,
-/// timestamp, sky brightness value, and upload status.
+/// timestamp, sky brightness value, and (with community features on) upload status.
 struct HistoryView: View {
 
     @State private var viewModel: HistoryViewModel
@@ -52,7 +52,7 @@ struct HistoryView: View {
                         }
                         .listRowBackground(Color(.systemGroupedBackground))
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Bortle \(record.bortleClass), \(viewModel.locationName(for: record)), \(String(format: "%.1f", record.skyBrightness)) magnitudes per arc second squared, \(record.isUploaded ? "uploaded" : "not uploaded")")
+                        .accessibilityLabel("Bortle \(record.bortleClass), \(viewModel.locationName(for: record)), \(String(format: "%.1f", record.skyBrightness)) magnitudes per arc second squared\(FeatureFlags.communityEnabled ? (record.isUploaded ? ", uploaded" : ", not uploaded") : "")")
                         .accessibilityHint("Tap to view sky comparison")
                     }
                     .listStyle(.insetGrouped)
@@ -117,13 +117,15 @@ private struct MeasurementRow: View {
                     .foregroundStyle(.primary)
 
                 HStack(spacing: 4) {
-                    Image(
-                        systemName: record.isUploaded
-                            ? "checkmark.icloud"
-                            : "icloud.slash"
-                    )
-                    .font(.caption2)
-                    .foregroundStyle(record.isUploaded ? .green : .secondary)
+                    if FeatureFlags.communityEnabled {
+                        Image(
+                            systemName: record.isUploaded
+                                ? "checkmark.icloud"
+                                : "icloud.slash"
+                        )
+                        .font(.caption2)
+                        .foregroundStyle(record.isUploaded ? .green : .secondary)
+                    }
 
                     Text("mag/arcsec²")
                         .font(.caption2)

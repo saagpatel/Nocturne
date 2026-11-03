@@ -1,6 +1,6 @@
 # Nocturne — Portfolio Disposition
 
-**Status:** Release Frozen (iOS App Store) — SwiftUI + AVFoundation
+**Status:** Active Release (iOS App Store, v1.0 local-only) — SwiftUI + AVFoundation
 iPhone-camera-as-light-pollution-meter on `origin/main` with full
 App Store submission scaffolding shipped (`APPSTORE-METADATA.md`,
 fastlane `deliver`, refreshed App Store screenshots, App Store
@@ -14,6 +14,26 @@ measurements to a crowdsourced global map).
 > Disposition uses strict `origin/main` verification.
 > **Introduces the "cloud-backed citizen-science" sub-shape** inside
 > the iOS App Store cluster.
+
+## Release state (November 3, 2026)
+
+Reactivated from Release Frozen; v1.0 is being prepared for App Store submission.
+
+- **Scope change.** v1.0 ships without the community map and measurement uploads.
+  The Supabase project behind them was deleted, so they sit behind
+  `FeatureFlags.communityEnabled = false` (`Nocturne/Constants.swift`). With the flag
+  off there is no Map tab, no upload settings or status, no Supabase client and no
+  upload queue entries. v1.1 turns the flag back on once a backend is hosted again.
+- **Store copy** (description, review notes, `PRIVACY.md`) describes the local-only
+  build. Privacy labels need the same review: nothing is uploaded except Open-Meteo
+  weather lookups.
+- **Signing is pending.** The App Store provisioning profile does not exist yet; it
+  waits on the operator turning on automatic signing in Xcode. Unsigned Release archives
+  build cleanly.
+- Still open before upload: shot 2 on a physical iPhone at night, the App Store
+  Connect record, then a signed export. Upload and TestFlight need the operator's OK.
+
+The sections below are the original Release Frozen disposition, kept for history.
 
 ---
 
@@ -176,7 +196,7 @@ has done all the Apple-side work).
 
 | Aspect | Posture |
 |---|---|
-| Portfolio status | `Release Frozen (iOS App Store, cloud-backed)` |
+| Portfolio status | `Active Release (iOS App Store, v1.0 local-only; cloud-backed from v1.1)` |
 | Distribution channel | **App Store Connect** (Weather category) |
 | Review cadence | Suspend overdue counting |
 | Resurface conditions | (a) Backend hosting decision made, (b) submits for App Store Review, (c) abuse / spam posture needs hardening, (d) Open-Meteo or VIIRS data source breakage, (e) v1.1 (additional iPhone model calibration) |

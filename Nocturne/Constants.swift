@@ -1,5 +1,14 @@
 import Foundation
 
+// MARK: - Feature Flags
+
+enum FeatureFlags {
+    /// Community map, measurement uploads and their settings. Off for v1: the
+    /// backend is not hosted, so no code path may reach the configured Supabase
+    /// URL. Turn on for v1.1 once a backend is running again.
+    static let communityEnabled = false
+}
+
 // MARK: - Sky Brightness
 
 enum SkyBrightnessConstants {

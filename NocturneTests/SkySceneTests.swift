@@ -1,3 +1,4 @@
+import SpriteKit
 import XCTest
 @testable import Nocturne
 
@@ -41,6 +42,37 @@ final class SkySceneTests: XCTestCase {
 
         scene.renderStars()
         XCTAssertEqual(scene.renderedStarCount, projected)
+    }
+
+    // MARK: - Milky Way
+
+    @MainActor
+    func testMilkyWay_isOneSceneSizedSpriteWhenInView() {
+        // Galactic center near the zenith, so the band crosses the field.
+        let scene = PristineSkyScene(
+            size: CGSize(width: 300, height: 500),
+            stars: [],
+            centerRA: 266.4,
+            centerDec: -28.9
+        )
+        scene.addMilkyWay()
+        let bands = scene.children.filter { $0.name == "milkyWay" }
+        XCTAssertEqual(bands.count, 1)
+        let sprite = try? XCTUnwrap(bands.first as? SKSpriteNode)
+        XCTAssertEqual(sprite?.size, scene.size)
+    }
+
+    @MainActor
+    func testMilkyWay_isOmittedWhenBandIsOutsideField() {
+        // Galactic north pole at the center: the equator is 90° away.
+        let scene = PristineSkyScene(
+            size: CGSize(width: 300, height: 500),
+            stars: [],
+            centerRA: 192.86,
+            centerDec: 27.13
+        )
+        scene.addMilkyWay()
+        XCTAssertTrue(scene.children.filter { $0.name == "milkyWay" }.isEmpty)
     }
 
     // MARK: - Scene Star Counts (structural)
