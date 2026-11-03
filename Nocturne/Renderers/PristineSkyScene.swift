@@ -1,4 +1,5 @@
 import SpriteKit
+import UIKit
 
 /// Renders a pristine Bortle Class 1 sky (22.0 mag/arcsec²).
 /// Includes Milky Way band and Andromeda galaxy (M31).
@@ -37,54 +38,88 @@ final class PristineSkyScene: SkyScene {
 
     // MARK: - Milky Way
 
-    /// Render the Milky Way as a glowing band along the galactic equator.
+    /// Render the Milky Way as a soft band along the galactic equator.
+    ///
+    /// A gnomonic projection maps the galactic equator (a great circle) to a straight
+    /// line, so the band is a gradient across that line. It fades out at the edge of
+    /// the catalog field, so it never extends past the stars it sits behind. Drawn as
+    /// one prerendered sprite: a stroked `SKShapeNode` this wide breaks up into grey
+    /// slivers.
     func addMilkyWay() {
         let fieldRadians = fieldDegrees * .pi / 180.0
         let pixelsPerRadian = min(size.width, size.height) / fieldRadians
+        let center = CGPoint(x: size.width / 2.0, y: size.height / 2.0)
 
-        // Sample points along the galactic equator (b = 0)
         var points: [CGPoint] = []
-        for i in 0..<36 {
-            let galLon = Double(i) * 10.0
-            let (ra, dec) = Astrometry.galacticToEquatorial(l: galLon, b: 0)
+        for i in 0..<360 {
+            let (ra, dec) = Astrometry.galacticToEquatorial(l: Double(i), b: 0)
             guard let projected = Astrometry.gnomonicProject(
                 starRA: ra, starDec: dec,
                 centerRA: centerRA, centerDec: centerDec
             ) else { continue }
+            points.append(CGPoint(
+                x: center.x + projected.x * pixelsPerRadian,
+                y: center.y + projected.y * pixelsPerRadian
+            ))
+        }
+        guard let first = points.first,
+              let far = points.max(by: { first.distance(to: $0) < first.distance(to: $1) }),
+              first.distance(to: far) > 1 else { return }
 
-            let screenX = size.width / 2.0 + projected.x * pixelsPerRadian
-            let screenY = size.height / 2.0 + projected.y * pixelsPerRadian
+        // Field edge: the catalog query covers half the field in every direction.
+        let fieldRadius = tan(fieldRadians / 2.0) * pixelsPerRadian
+        let angle = atan2(far.y - first.y, far.x - first.x)
+        let direction = CGPoint(x: cos(angle), y: sin(angle))
+        // Point on the band's center line nearest the scene center.
+        let along = (center.x - first.x) * direction.x + (center.y - first.y) * direction.y
+        let lineCenter = CGPoint(x: first.x + direction.x * along, y: first.y + direction.y * along)
+        guard center.distance(to: lineCenter) < fieldRadius else { return }
 
-            // Only include points near the visible area (with generous margin)
-            guard screenX > -size.width, screenX < size.width * 2,
-                  screenY > -size.height, screenY < size.height * 2 else { continue }
+        let halfWidth = MilkyWayConstants.bandWidthDegrees * .pi / 180.0 * pixelsPerRadian
+        let image = UIGraphicsImageRenderer(size: size).image { ctx in
+            let cg = ctx.cgContext
+            // UIKit draws top-down; SpriteKit's y axis points up.
+            cg.translateBy(x: 0, y: size.height)
+            cg.scaleBy(x: 1, y: -1)
 
-            points.append(CGPoint(x: screenX, y: screenY))
+            let peak = UIColor(white: 0.9, alpha: MilkyWayConstants.bandOpacity).cgColor
+            let clear = UIColor(white: 0.9, alpha: 0).cgColor
+            guard let band = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: [clear, peak, clear] as CFArray,
+                locations: [0, 0.5, 1]
+            ), let fade = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: [UIColor.white.cgColor, UIColor.white.cgColor,
+                         UIColor.white.withAlphaComponent(0).cgColor] as CFArray,
+                locations: [0, 0.75, 1]
+            ) else { return }
+
+            let normal = CGPoint(x: -direction.y, y: direction.x)
+            cg.drawLinearGradient(
+                band,
+                start: CGPoint(x: lineCenter.x - normal.x * halfWidth,
+                               y: lineCenter.y - normal.y * halfWidth),
+                end: CGPoint(x: lineCenter.x + normal.x * halfWidth,
+                             y: lineCenter.y + normal.y * halfWidth),
+                options: []
+            )
+            cg.setBlendMode(.destinationIn)
+            cg.drawRadialGradient(
+                fade,
+                startCenter: center, startRadius: 0,
+                endCenter: center, endRadius: fieldRadius,
+                // Past the end radius the clear stop must still be drawn, or
+                // destinationIn leaves the band outside the field untouched.
+                options: .drawsAfterEndLocation
+            )
         }
 
-        guard points.count >= 2 else { return }
-
-        // Sort points by x to get a smooth path
-        points.sort { $0.x < $1.x }
-
-        let path = CGMutablePath()
-        path.move(to: points[0])
-        for point in points.dropFirst() {
-            path.addLine(to: point)
-        }
-
-        let band = SKShapeNode(path: path)
-        band.name = "milkyWay"
-        band.strokeColor = SKColor(
-            white: 0.9,
-            alpha: MilkyWayConstants.bandOpacity
-        )
-        band.lineWidth = MilkyWayConstants.bandWidthDegrees * pixelsPerRadian * .pi / 180.0
-        band.lineCap = .round
-        band.lineJoin = .round
-        band.glowWidth = band.lineWidth * 0.4
-        band.zPosition = -100 // behind stars
-        addChild(band)
+        let sprite = SKSpriteNode(texture: SKTexture(image: image), size: size)
+        sprite.name = "milkyWay"
+        sprite.position = center
+        sprite.zPosition = -100 // behind stars
+        addChild(sprite)
     }
 
     // MARK: - Andromeda (M31)
@@ -119,5 +154,11 @@ final class PristineSkyScene: SkyScene {
         glow.zRotation = 0.6 // ~35° position angle
         glow.zPosition = -50 // behind stars, in front of Milky Way
         addChild(glow)
+    }
+}
+
+private extension CGPoint {
+    func distance(to other: CGPoint) -> CGFloat {
+        hypot(other.x - x, other.y - y)
     }
 }
