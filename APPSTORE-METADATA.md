@@ -51,7 +51,7 @@ KEY FEATURES
 
 WHAT TO EXPECT
 
-Nocturne is an experimental tool, not a calibrated professional meter; results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection. Contributing readings to a community dataset is optional and off by default.
+Nocturne is an experimental tool, not a calibrated professional meter; results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection. Readings are saved only on your device; Nocturne has no account and does not upload your measurements.
 
 ---
 
@@ -73,7 +73,7 @@ Python `len` counts the field values, including spaces and description line brea
 | Subtitle | 21 | 30 |
 | Promotional text | 156 | 170 |
 | Keywords | 80 | 100 |
-| Description | 1215 | 4000 |
+| Description | 1241 | 4000 |
 
 ---
 
@@ -108,7 +108,7 @@ https://github.com/saagpatel/Nocturne/blob/main/PRIVACY.md
 1. Run `bash scripts/capture-screenshots.sh` from the repository on a Mac with Xcode, XcodeGen (if the project has not been generated), and an available **iPhone 18 Pro Max** simulator. The script generates the project if missing, builds Debug once, captures shots **1**, **3** and **4** as `screenshots/appstore/iphone-18-pro-max/01.png`, `03.png` and `04.png`, and verifies 1320 × 2868 dimensions. It first launches the app, waits 2 seconds and terminates it to clear the cross-app status bar back link. These generated files are gitignored.
 2. Debug-only `-AppStoreScreenshot <n>` bypasses onboarding without changing saved preferences or the user database. Shots 1, 3 and 4 use synthetic readings inserted into an isolated, migrated GRDB database before the views load; they require no permissions, live services, random values or current dates. Release does not include this mode. The default settling delay is 4 seconds; use `SHOT_WAIT_SECONDS` or per-shot `SHOT_1_WAIT_SECONDS` / `SHOT_3_WAIT_SECONDS` / `SHOT_4_WAIT_SECONDS` to override it. `DERIVED` overrides the default `.build/shots` build directory.
 3. **OPERATOR: capture on device** for shot **2**. Use a physical iPhone producing 1320 × 2868 screenshots and follow the review steps below at night. Capture a successful reading, then tap See Your Sky for its comparison. Keep the actual reading, star counts and rendered content. The app has no mock camera path; the script skips this physical-device shot. Launch argument 2 shows an operator instruction, which must not be uploaded.
-4. Do not stage a populated community map or individual community pins. They are not part of this screenshot plan. The scripted result, history and comparison show plausible Debug fixtures, not evidence of physical measurements.
+4. Version 1.0 has no Map tab or community upload (`FeatureFlags.communityEnabled` is off), so no screenshot may show a map, upload status or contribution setting. The scripted result, history and comparison show plausible Debug fixtures, not evidence of physical measurements.
 5. Add only the planned headline overlays after capture; the script outputs the real app UI without overlays. Check the final exported dimensions before uploading. The existing 1290 × 2796 images do not satisfy this plan.
 
 ---
@@ -121,15 +121,10 @@ physical iPhone with a back camera, camera permission and a location fix.
 
 Navigation without a measurement:
 1. On first launch, tap "Skip", or tap "Continue" twice and "Get Started".
-2. Open "Settings". "Contribute measurements" is off by default.
-   "Allow cellular uploads" is disabled until contribution is enabled.
+2. Open "Settings". It lists the privacy policy, support link, acknowledgments
+   and version. There are no upload or account settings.
 3. Open "History". With an open database and no saved readings it shows
    "No Measurements Yet". If the database cannot open it shows "History Unavailable".
-4. Open "Map". With no backend configured it shows "Map Unavailable".
-   The message is "The community map is not available in this version."
-   A configured backend needs networking and data for the viewed region to show
-   colored heatmap circles. "Points" does not show individual community pins.
-   No populated community map is promised in this build.
 
 Measurement on a physical iPhone:
 1. Open the "Measure" tab and tap "Prepare Camera". Allow camera and location
@@ -154,14 +149,9 @@ shows "Something went wrong" and "No suitable camera found on this device."
 There is no simulated measurement or preloaded-history mode. Use the navigation
 steps above for simulator review and a physical device at night for the core flow.
 
-Community uploads require configured services, a saved reading, contribution
-enabled in "Settings" and an allowed connection. Turning contribution on does not
-upload immediately; pending uploads are retried when the app returns to foreground.
-Weather lookup sends coordinates to Open-Meteo even with contribution off.
-When configured, the Map tab requests heatmap data from the community backend's
-"heatmap_tiles" function using the visible map bounds, whether or not contribution
-is on. Cached data may be used instead of a new request.
-History location names and the map use Apple online services.
+This version has no community map and does not upload measurements. Readings
+are stored only on the device. Weather lookup sends a reading's coordinates to
+Open-Meteo, and History location names use Apple reverse geocoding.
 ```
 
 ---
@@ -183,7 +173,7 @@ History location names and the map use Apple online services.
 - [ ] PrivacyInfo.xcprivacy declares collected Precise Location and Other Data Types for App Functionality, without identity linkage or tracking, and required-reason UserDefaults access (`CA92.1`)
 - [ ] Camera frames are not declared as collected photos; camera permission purpose is in Info.plist
 - [ ] TestFlight internal test records actual outcomes for permission flows, a physical-device night reading, comparison, history persistence and unavailable/error states
-- [ ] Review build's backend configuration, map availability and opt-in upload behavior confirmed; review notes match those outcomes
+- [ ] Review build confirmed to have no Map tab, upload settings or upload status (`FeatureFlags.communityEnabled` off); review notes match
 - [ ] Submit for Review
 
 ## Copyright

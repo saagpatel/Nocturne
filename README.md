@@ -13,7 +13,7 @@ Nocturne is currently an experimental estimator, not a calibrated professional m
 - **Bortle class rating** — maps sky brightness to Bortle classes 1–9 (class 1 at ≥21.75 mag/arcsec²; class 9 below 16.5)
 - **4-gate validation** — rejects daylight measurements (solar altitude ≥ −6°), tilted-phone readings (≥20° from zenith), and saturated frames (≥1% saturated pixels); tags cloud cover without rejecting
 - **Sky comparison view** — side-by-side SpriteKit star fields: your measured sky vs. a Bortle Class 1 reference at the same coordinates, drawn from Gaia DR3 data
-- **Global heatmap** — community measurement heat tiles rendered as color-coded `MKOverlay` layers (blue = pristine, red = urban)
+- **Global heatmap** (off in v1.0 behind `FeatureFlags.communityEnabled`; returns with a hosted backend) — community measurement heat tiles rendered as color-coded `MKOverlay` layers (blue = pristine, red = urban)
 - **Offline-first** — measurements saved to local GRDB SQLite first; Supabase uploads retry when the app enters the foreground with connectivity, sharing consent, and Wi-Fi (or cellular uploads enabled)
 
 ## Quick Start
