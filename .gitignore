@@ -22,3 +22,10 @@ __pycache__/
 
 # Retired Hipparcos/Tycho-2 catalog (noncommercial license; replaced by gaia_dr3.sqlite)
 Nocturne/Resources/hipparcos_tycho2.sqlite
+
+# distribution-kit lane receipts
+dist-receipts/
+
+# Reproducible App Store captures (uploaded separately)
+screenshots/appstore/
+.build/shots/

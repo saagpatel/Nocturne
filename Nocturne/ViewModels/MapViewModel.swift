@@ -24,7 +24,7 @@ final class MapViewModel {
     private let supabase: SupabaseService
 
     @ObservationIgnored
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "MapViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "MapViewModel")
 
     // MARK: - Init
 

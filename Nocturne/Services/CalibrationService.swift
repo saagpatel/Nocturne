@@ -4,7 +4,7 @@ import os
 enum CalibrationService {
 
     private static let logger = Logger(
-        subsystem: "com.nocturne.app",
+        subsystem: "com.nocturnn.app",
         category: "CalibrationService"
     )
 

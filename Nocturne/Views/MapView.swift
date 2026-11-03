@@ -23,7 +23,7 @@ struct MapView: View {
             MapKitView(viewModel: viewModel, showRawPoints: showRawPoints)
                 .ignoresSafeArea()
                 .accessibilityLabel("Light pollution map")
-                .accessibilityHint("Interactive map showing light pollution measurements worldwide")
+                .accessibilityHint("Interactive map showing light pollution measurements")
 
             VStack(alignment: .trailing, spacing: 8) {
                 Picker("Display mode", selection: $showRawPoints) {

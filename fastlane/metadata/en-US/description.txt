@@ -1,21 +1,17 @@
-Nocturne uses your iPhone camera to estimate local light pollution. Point it at the night sky and Nocturne captures a fixed exposure, checks measurement conditions, and maps the result to the Bortle scale.
+How dark is the sky above you? Nocturne uses your iPhone camera to estimate sky brightness and map the result to the Bortle scale.
 
-Then see what you're missing: a real-time, side-by-side star field comparison shows your washed-out sky next to the same patch of sky under pristine Bortle Class 1 conditions — thousands of stars, the Milky Way, and deep-sky objects that light pollution hides from view.
-
-You can optionally contribute measurements to a crowdsourced global light-pollution map. Contribution is off by default and controlled in Settings.
+After a reading, Nocturne draws the sky overhead at that place and time twice, from a bundled Gaia DR3 catalog of about 21,000 stars: once at your estimated brightness, once under a Bortle Class 1 sky. The second view is what you're missing. Both are rendered illustrations, not camera images.
 
 KEY FEATURES
 
-• Experimental sky-brightness estimate using your iPhone's camera
-• Automatic Bortle class classification (1–9 scale)
-• Side-by-side star field comparison: your sky vs. a pristine dark sky
-• Interactive global light pollution heatmap powered by community data
-• Measurement validation: tilt detection, daylight rejection, and hot-pixel filtering
-• Weather-aware: cloud cover tagged via Open-Meteo for data quality
-• Provisional device profiles for supported iPhone models
-• Complete measurement history with reverse-geocoded locations
-• Offline-first: all measurements stored locally; community upload is opt-in
+• Sky brightness in mag/arcsec²
+• Bortle class on a scale from 1 to 9
+• Side-by-side star fields based on your reading and a dark-sky reference
+• Rejects readings taken in daylight, at a tilt, or with too many saturated pixels
+• Cloud-cover information from Open-Meteo when weather data is available
+• Brightness calculations for supported iPhone models
+• A history of your saved readings, with date, brightness, and place
 
-BUILT FOR CITIZEN SCIENCE
+WHAT TO EXPECT
 
-Nocturne is an experimental citizen-science tool, not a calibrated professional meter. A fixed capture protocol helps make repeated readings more consistent, but results can vary by device and conditions. Treat values as estimates until the device profiles are validated against traceable physical references.
+Nocturne is an experimental tool, not a calibrated professional meter; results vary by device and conditions. Camera frames are processed on your device and are not saved or uploaded. Weather lookup uses your coordinates and requires an internet connection. Contributing readings to a community dataset is optional and off by default.

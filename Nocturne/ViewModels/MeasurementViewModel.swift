@@ -36,11 +36,19 @@ final class MeasurementViewModel {
 
     private let motionManager = CMMotionManager()
     private let validationGate = ValidationGate()
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "MeasurementViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "MeasurementViewModel")
 
     init() {
         self.databaseManager = try? DatabaseManager.makeDefault()
     }
+
+    #if DEBUG
+    /// Show the existing result card without opening user data or starting a camera.
+    init(screenshotRecord: MeasurementRecord, database: DatabaseManager) {
+        self.databaseManager = database
+        self.state = .complete(screenshotRecord)
+    }
+    #endif
 
     // MARK: - Session Management
 

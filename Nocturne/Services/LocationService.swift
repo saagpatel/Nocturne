@@ -11,7 +11,7 @@ final class LocationService {
     private(set) var authorizationStatus: CLAuthorizationStatus
 
     private let locationManager = CLLocationManager()
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "LocationService")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "LocationService")
 
     init() {
         self.authorizationStatus = locationManager.authorizationStatus

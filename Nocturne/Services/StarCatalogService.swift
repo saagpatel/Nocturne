@@ -7,7 +7,7 @@ import os
 actor StarCatalogService {
 
     private let catalogDB: DatabaseQueue
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "StarCatalogService")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "StarCatalogService")
 
     init() throws {
         guard let db = try DatabaseManager.openStarCatalog() else {

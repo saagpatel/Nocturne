@@ -14,7 +14,7 @@ final class ComparisonViewModel {
 
     let measurement: MeasurementRecord
 
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "ComparisonViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "ComparisonViewModel")
 
     // MARK: - Computed Stats
 
@@ -25,8 +25,8 @@ final class ComparisonViewModel {
         UserSkyScene.limitingMagnitude(for: measurement.skyBrightness)
     }
 
-    // Stored, not read from the scenes: a scene's rendered count is only set once SpriteKit presents it,
-    // which SwiftUI never observes, so the labels showed "0 stars".
+    // Stored so SwiftUI observes them; SpriteKit renders later, in didMove(to:),
+    // and its own counter is not observable.
     private(set) var userStarCount = 0
     private(set) var pristineStarCount = 0
 
@@ -84,8 +84,8 @@ final class ComparisonViewModel {
                 centerDec: zenith.dec
             )
 
-            userStarCount = userScene?.visibleStars().count ?? 0
-            pristineStarCount = pristineScene?.visibleStars().count ?? 0
+            userStarCount = userScene?.projectedStars().count ?? 0
+            pristineStarCount = pristineScene?.projectedStars().count ?? 0
 
             isLoading = false
         } catch {

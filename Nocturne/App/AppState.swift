@@ -12,9 +12,9 @@ final class AppState {
     @ObservationIgnored
     private let monitor = NWPathMonitor()
     @ObservationIgnored
-    private let monitorQueue = DispatchQueue(label: "com.nocturne.network-monitor")
+    private let monitorQueue = DispatchQueue(label: "com.nocturnn.app.network-monitor")
     @ObservationIgnored
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "AppState")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "AppState")
 
     let databaseManager: DatabaseManager?
     let supabaseService: SupabaseService?
@@ -38,6 +38,15 @@ final class AppState {
     }
 
     init() {
+        #if DEBUG
+        // Screenshot navigation owns an isolated database and local bindings.
+        // Do not open user data or start services/foreground upload retries.
+        if ProcessInfo.processInfo.arguments.contains("-AppStoreScreenshot") {
+            self.databaseManager = nil
+            self.supabaseService = nil
+            return
+        }
+        #endif
         self.databaseManager = try? DatabaseManager.makeDefault()
         // Only initialize Supabase if properly configured.
         // Gracefully skip if Config.xcconfig is not set up.

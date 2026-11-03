@@ -77,10 +77,9 @@ class SkyScene: SKScene {
 
     // MARK: - Star Rendering
 
-    /// Stars that pass the subclass filter and land on screen (with a small margin), with their positions.
-    /// Shared by rendering and by the comparison's star counts, which SwiftUI must read before the scene
-    /// is presented (the rendered count is only known after `didMove(to:)`).
-    func visibleStars() -> [(star: Star, point: CGPoint)] {
+    /// Stars that pass `filteredStars()` and project inside the visible field, with
+    /// their scene positions. Rendering and the comparison counts share this pass.
+    func projectedStars() -> [(star: Star, position: CGPoint)] {
         let fieldRadians = fieldDegrees * .pi / 180.0
         let pixelsPerRadian = min(size.width, size.height) / fieldRadians
 
@@ -102,15 +101,15 @@ class SkyScene: SKScene {
         }
     }
 
-    /// Project and render all stars onto the scene. Override `filteredStars()` in subclasses to filter.
+    /// Project and render all stars onto the scene. Override in subclasses to filter.
     func renderStars() {
         removeAllChildren()
         renderedStarCount = 0
 
-        for (star, point) in visibleStars() {
+        for (star, position) in projectedStars() {
             let texture = textureForMagnitude(star.vmag)
             let sprite = SKSpriteNode(texture: texture)
-            sprite.position = point
+            sprite.position = position
             sprite.alpha = opacityForMagnitude(star.vmag)
             sprite.color = colorForBV(star.colorIndex)
             sprite.colorBlendFactor = star.colorIndex != nil ? 1.0 : 0

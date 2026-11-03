@@ -14,6 +14,20 @@ struct HistoryView: View {
         _viewModel = State(initialValue: HistoryViewModel(db: db))
     }
 
+    #if DEBUG
+    init(db: DatabaseManager, screenshotLocationNames: [String: String],
+         screenshotComparison: MeasurementRecord?) {
+        _viewModel = State(initialValue: HistoryViewModel(
+            db: db, screenshotLocationNames: screenshotLocationNames
+        ))
+        var path = NavigationPath()
+        if let screenshotComparison {
+            path.append(screenshotComparison)
+        }
+        _navigationPath = State(initialValue: path)
+    }
+    #endif
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Group {

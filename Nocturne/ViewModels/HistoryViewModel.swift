@@ -23,13 +23,22 @@ final class HistoryViewModel {
     private let db: DatabaseManager
 
     @ObservationIgnored
-    private let logger = Logger(subsystem: "com.nocturne.app", category: "HistoryViewModel")
+    private let logger = Logger(subsystem: "com.nocturnn.app", category: "HistoryViewModel")
 
     // MARK: - Init
 
     init(db: DatabaseManager) {
         self.db = db
     }
+
+    #if DEBUG
+    convenience init(db: DatabaseManager, screenshotLocationNames: [String: String]) {
+        self.init(db: db)
+        // Keep the normal database fetch; only prime the geocoding cache so
+        // screenshot place names are deterministic and need no network.
+        geocodedNames = screenshotLocationNames
+    }
+    #endif
 
     // MARK: - Load
 
