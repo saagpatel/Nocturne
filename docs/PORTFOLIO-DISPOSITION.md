@@ -1,19 +1,11 @@
 # Nocturne — Portfolio Disposition
 
-**Status:** Active Release (iOS App Store, v1.0 local-only) — SwiftUI + AVFoundation
-iPhone-camera-as-light-pollution-meter on `origin/main` with full
-App Store submission scaffolding shipped (`APPSTORE-METADATA.md`,
-fastlane `deliver`, refreshed App Store screenshots, App Store
-archive prep, signing config), citizen-science framing
-(crowdsourced global heatmap), per-device VIIRS calibration for
-iPhone 12–16 Pro. **Fourth member of the iOS App Store cluster** —
-and the **first cloud-backed iOS cluster member** (Calibrate /
-Chromafield / Ghost Routes are local-first; Nocturne syncs
-measurements to a crowdsourced global map).
-
-> Disposition uses strict `origin/main` verification.
-> **Introduces the "cloud-backed citizen-science" sub-shape** inside
-> the iOS App Store cluster.
+**Status:** Active release preparation for a local-only iOS v1.0. Nocturne
+uses SwiftUI and AVFoundation to estimate night-sky brightness from iPhone
+camera readings. Its per-device profiles are provisional pending comparison
+with traceable physical instruments. The v1.0 release candidate keeps the
+community map and measurement uploads disabled. Store submission scaffolding
+exists; signing and submission are tracked below.
 
 ## Release state (November 3, 2026)
 
