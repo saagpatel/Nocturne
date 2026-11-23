@@ -36,7 +36,9 @@ open Nocturne.xcodeproj
 `make generate` creates `Config.xcconfig` from `Config.xcconfig.example` if needed. Both build configurations use `Config.base.xcconfig`, which provides placeholders and optionally includes the gitignored local config. Leave the placeholders in place for v1.0.
 
 ### Usage
-For a device run, select your signing team in Xcode and use a bundle identifier your team can sign. Run the app on your iPhone and go outside when the sun is more than 6° below the horizon. Tap **Prepare Camera**, allow camera and location access, aim the rear camera at the sky, and tap **Measure Sky**. The tilt check treats a level, screen-up phone as upright, so it can reject a shot aimed straight overhead. After a successful reading, tap **See Your Sky** for the comparison.
+For a device run, select your signing team in Xcode and use a bundle identifier your team can sign. Run the app on your iPhone and go outside when the sun is more than 6° below the horizon. Tap **Prepare Camera**, allow camera and location access, aim the rear camera at the sky, and tap **Measure Sky**. The tilt check requires the screen to be less than 20° from level and facing up. If motion data is available and you keep the rear camera aimed at the sky through validation, the reading will fail this check.
+
+On the result screen for a successful reading, tap **See Your Sky** for the comparison.
 
 ## Verification
 
